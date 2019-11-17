@@ -545,7 +545,7 @@ FROM DimCustomer</sql>
     <fields>
       <field>
         <field_name>max_dimcustomer_srgt</field_name>
-        <variable_name>maxsrgt</variable_name>
+        <variable_name>maxDimcustomerSrgt</variable_name>
         <variable_type>PARENT_JOB</variable_type>
         <default_value/>
       </field>
