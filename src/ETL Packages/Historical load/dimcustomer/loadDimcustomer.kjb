@@ -12,6 +12,57 @@
   <modified_date>2019/11/14 23:38:02.833</modified_date>
   <parameters>
     </parameters>
+  <connection>
+    <name>DW</name>
+    <server>127.0.0.1</server>
+    <type>POSTGRESQL</type>
+    <access>Native</access>
+    <database>TPCDI</database>
+    <port>5432</port>
+    <username>postgres</username>
+    <password>Encrypted 2be98afc86aa7f29eaa0ab471cd88aec9</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>5432</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
   <slaveservers>
     </slaveservers>
   <job-log-table>
@@ -393,8 +444,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>992</xloc>
-      <yloc>208</yloc>
+      <xloc>1008</xloc>
+      <yloc>336</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -511,17 +562,132 @@
       <yloc>208</yloc>
       <attributes_kjc/>
     </entry>
+    <entry>
+      <name>Recursively update DimCustomer</name>
+      <description/>
+      <type>SQL</type>
+      <attributes/>
+      <sql>with RECURSIVE temp as(
+	select ROW_NUMBER () OVER (
+        PARTITION BY customerid
+      	ORDER BY effectivedate
+        ) as rn,
+		*
+	from dimcustomer
+),new_dimcustomer as(
+	select * from temp
+	where rn = 1 
+	union
+	select 
+		b.rn
+		,b.SK_CustomerID
+		,b.customerid
+		,case when b.TaxID is null then a.TaxID else b.TaxID end as TaxID
+		,case when b.Status is null then a.Status else b.Status end as Status
+		,case when b.LastName is null then a.LastName else b.LastName end as LastName
+		,case when b.FirstName is null then a.FirstName else b.FirstName end as FirstName
+		,case when b.MiddleInitial is null then a.MiddleInitial else b.MiddleInitial end as MiddleInitial
+		,case when b.Gender is null then a.Gender else b.Gender end as Gender
+		,case when b.Tier is null then a.Tier else b.Tier end as Tier
+		,case when b.DOB is null then a.DOB else b.DOB end as DOB
+		,case when b.AddressLine1 is null then a.AddressLine1 else b.AddressLine1 end as AddressLine1 
+		,case when b.AddressLine2 is null then a.AddressLine2 else b.AddressLine2 end as AddressLine2
+		,case when b.PostalCode is null then a.PostalCode else b.PostalCode end as PostalCode
+		,case when b.City is null then a.City else b.City end as City
+		,case when b.StateProv is null then a.StateProv else b.StateProv end as StateProv
+		,case when b.Country is null then a.Country else b.Country end as Country
+		,case when b.Phone1 is null then a.Phone1 else b.Phone1 end as Phone1
+		,case when b.Phone2 is null then a.Phone2 else b.Phone2 end as Phone2
+		,case when b.Phone3 is null then a.Phone3 else b.Phone3 end as Phone3
+		,case when b.Email1 is null then a.Email1 else b.Email1 end as Email1
+		,case when b.Email2 is null then a.Email2 else b.Email2 end as Email2
+		,case when b.NationalTaxRateDesc is null then a.NationalTaxRateDesc else b.NationalTaxRateDesc end as NationalTaxRateDesc
+		,case when b.NationalTaxRate is null then a.NationalTaxRate else b.NationalTaxRate end as NationalTaxRate
+		,case when b.LocalTaxRateDesc is null then a.LocalTaxRateDesc else b.LocalTaxRateDesc end as LocalTaxRateDesc
+		,case when b.LocalTaxRate is null then a.LocalTaxRate else b.LocalTaxRate end as LocalTaxRate
+		,case when b.AgencyID is null then a.AgencyID else b.AgencyID end as AgencyID
+		,case when b.CreditRating is null then a.CreditRating else b.CreditRating end as CreditRating
+		,case when b.NetWorth is null then a.NetWorth else b.NetWorth end as NetWorth
+		,case when b.MarketingNameplate is null then a.MarketingNameplate else b.MarketingNameplate end as MarketingNameplate
+		,b.IsCurrent
+		,b.BatchID
+		,b.effectivedate
+		,b.enddate
+	from temp b inner join new_dimcustomer a on a.rn = b.rn-1 and a.customerid = b.customerid
+)
+
+update dimcustomer as old_cust
+set TaxID = new_cust.TaxID  ,
+Status = new_cust.Status  ,
+LastName = new_cust.LastName  ,
+FirstName = new_cust.FirstName  ,
+MiddleInitial = new_cust.MiddleInitial  ,
+Gender = new_cust.Gender  ,
+Tier = new_cust.Tier  ,
+DOB = new_cust.DOB  ,
+AddressLine1 = new_cust.AddressLine1  ,
+AddressLine2 = new_cust.AddressLine2  ,
+PostalCode = new_cust.PostalCode  ,
+City = new_cust.City  ,
+StateProv = new_cust.StateProv  ,
+Country = new_cust.Country  ,
+Phone1 = new_cust.Phone1  ,
+Phone2 = new_cust.Phone2  ,
+Phone3 = new_cust.Phone3  ,
+Email1 = new_cust.Email1  ,
+Email2 = new_cust.Email2  ,
+NationalTaxRateDesc = new_cust.NationalTaxRateDesc  ,
+NationalTaxRate = new_cust.NationalTaxRate  ,
+LocalTaxRateDesc	 = new_cust.LocalTaxRateDesc  ,
+LocalTaxRate = new_cust.LocalTaxRate  ,
+AgencyID = new_cust.AgencyID  ,
+CreditRating  = new_cust.CreditRating  ,
+NetWorth = new_cust.NetWorth  ,
+MarketingNameplate = new_cust.MarketingNameplate 
+from  new_dimcustomer as new_cust
+where new_cust.sk_customerid = old_cust.sk_customerid
+--order by new_cust.customerid, new_cust.effectivedate;
+</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>DW</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>592</xloc>
+      <yloc>336</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>Set specific columns to NOT NULL</name>
+      <description/>
+      <type>SQL</type>
+      <attributes/>
+      <sql>alter table dimcustomer alter column  AddressLine1 SET NOT NULL;
+alter table dimcustomer alter column  TaxID SET NOT NULL;
+alter table dimcustomer alter column  Status SET NOT NULL;
+alter table dimcustomer alter column  LastName SET NOT NULL; 
+alter table dimcustomer alter column  FirstName SET NOT NULL;
+alter table dimcustomer alter column  DOB SET NOT NULL;
+alter table dimcustomer alter column  PostalCode SET NOT NULL;
+alter table dimcustomer alter column  City SET NOT NULL;
+alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>DW</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>784</xloc>
+      <yloc>336</yloc>
+      <attributes_kjc/>
+    </entry>
   </entries>
   <hops>
-    <hop>
-      <from>Load DimCustomer</from>
-      <to>Success</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
     <hop>
       <from>DimCustomer - Initial load</from>
       <to>Close old records</to>
@@ -561,6 +727,33 @@
     <hop>
       <from>Find the max DimCustomer SRGT 2</from>
       <to>Load DimCustomer</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Load DimCustomer</from>
+      <to>Recursively update DimCustomer</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Recursively update DimCustomer</from>
+      <to>Set specific columns to NOT NULL</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Set specific columns to NOT NULL</from>
+      <to>Success</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>

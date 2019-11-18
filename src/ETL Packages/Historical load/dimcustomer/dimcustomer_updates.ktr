@@ -499,11 +499,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Add sequence</from>
-      <to>DimCustomer</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Add systemic fields</from>
       <to>Add sequence</to>
       <enabled>Y</enabled>
@@ -569,21 +564,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join 2</from>
-      <to>Sort rows 6</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Sort rows 6</from>
-      <to>Merge join 3</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Sort rows 5</from>
-      <to>Merge join 3</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Select values</from>
       <to>Sort rows 2</to>
       <enabled>Y</enabled>
@@ -591,21 +571,6 @@
     <hop>
       <from>Produce Fields</from>
       <to>Select values</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Merge join 3</from>
-      <to>Filter rows by date</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Current records of DimCustomer</from>
-      <to>Sort rows 5</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Filter rows by date</from>
-      <to>Analytic query</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -626,6 +591,16 @@
     <hop>
       <from>Select values 3</from>
       <to>Modified JavaScript value</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add sequence</from>
+      <to>DimCustomer 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Merge join 2</from>
+      <to>Analytic query</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -659,7 +634,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1824</xloc>
+      <xloc>1600</xloc>
       <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
@@ -698,7 +673,45 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1712</xloc>
+      <xloc>1488</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Analytic query</name>
+    <type>AnalyticQuery</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <group>
+      <field>
+        <name>C_ID</name>
+      </field>
+    </group>
+    <fields>
+      <field>
+        <aggregate>NEXT_ActionDate</aggregate>
+        <subject>ActionDate</subject>
+        <type>LEAD</type>
+        <valuefield>1</valuefield>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1008</xloc>
       <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1141,198 +1154,6 @@
     </GUI>
   </step>
   <step>
-    <name>Current records of DimCustomer</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>DW</connection>
-    <sql>SELECT * FROM dimcustomer</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1040</xloc>
-      <yloc>0</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>DimCustomer</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>DW</connection>
-    <schema/>
-    <table>dimcustomer</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>Tier</column_name>
-        <stream_name>Tier_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>TaxID</column_name>
-        <stream_name>taxid</stream_name>
-      </field>
-      <field>
-        <column_name>Status</column_name>
-        <stream_name>Status_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>StateProv</column_name>
-        <stream_name>StateProv_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>SK_CustomerID</column_name>
-        <stream_name>SK_CustomerID_1</stream_name>
-      </field>
-      <field>
-        <column_name>PostalCode</column_name>
-        <stream_name>PostalCode_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>Phone3</column_name>
-        <stream_name>Phone3_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>Phone2</column_name>
-        <stream_name>Phone2_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>Phone1</column_name>
-        <stream_name>Phone1_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>NationalTaxRateDesc</column_name>
-        <stream_name>NationalTaxRateDesc_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>NationalTaxRate</column_name>
-        <stream_name>NationalTaxRate_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>MiddleInitial</column_name>
-        <stream_name>middleinitial</stream_name>
-      </field>
-      <field>
-        <column_name>LocalTaxRateDesc</column_name>
-        <stream_name>LocalTaxRateDesc_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>LocalTaxRate</column_name>
-        <stream_name>LocalTaxRate_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>LastName</column_name>
-        <stream_name>lastname</stream_name>
-      </field>
-      <field>
-        <column_name>IsCurrent</column_name>
-        <stream_name>IsCurrent_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>Gender</column_name>
-        <stream_name>Gender_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>FirstName</column_name>
-        <stream_name>firstname</stream_name>
-      </field>
-      <field>
-        <column_name>EndDate</column_name>
-        <stream_name>EndDate_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>Email2</column_name>
-        <stream_name>Email2_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>Email1</column_name>
-        <stream_name>Emai1_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>EffectiveDate</column_name>
-        <stream_name>ActionDate</stream_name>
-      </field>
-      <field>
-        <column_name>DOB</column_name>
-        <stream_name>dob</stream_name>
-      </field>
-      <field>
-        <column_name>CustomerID</column_name>
-        <stream_name>C_ID</stream_name>
-      </field>
-      <field>
-        <column_name>Country</column_name>
-        <stream_name>Country_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>City</column_name>
-        <stream_name>City_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>BatchID</column_name>
-        <stream_name>BatchID</stream_name>
-      </field>
-      <field>
-        <column_name>AddressLine2</column_name>
-        <stream_name>AddressLine2_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>AddressLine1</column_name>
-        <stream_name>AddressLine1_NEW</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1936</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>Filter ActionType</name>
     <type>FilterRows</type>
     <description/>
@@ -1532,8 +1353,8 @@
     </GUI>
   </step>
   <step>
-    <name>Merge join 3</name>
-    <type>MergeJoin</type>
+    <name>Modified JavaScript value</name>
+    <type>ScriptValueMod</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1542,15 +1363,45 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <join_type>INNER</join_type>
-    <step1>Sort rows 6</step1>
-    <step2>Sort rows 5</step2>
-    <keys_1>
-      <key>C_ID</key>
-    </keys_1>
-    <keys_2>
-      <key>customerid</key>
-    </keys_2>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>var IsCurrent_NEW
+var EndDate_NEW
+if( NEXT_ActionDate == null) 
+{
+	EndDate_NEW = "9999-12-31"
+	IsCurrent_NEW = 'True'
+}
+else 
+{
+	EndDate_NEW = NEXT_ActionDate	
+	IsCurrent_NEW = 'False'
+}
+</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>IsCurrent_NEW</name>
+        <rename>IsCurrent_NEW</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>EndDate_NEW</name>
+        <rename>EndDate_NEW</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1560,7 +1411,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1040</xloc>
+      <xloc>1264</xloc>
       <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1875,6 +1726,113 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
     </GUI>
   </step>
   <step>
+    <name>Select values 2</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>IsCurrent_NEW</name>
+        <rename>IsCurrent_NEW</rename>
+        <type>Boolean</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+      <meta>
+        <name>EndDate_NEW</name>
+        <rename>EndDate_NEW</rename>
+        <type>Date</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask>yyyy-MM-dd</conversion_mask>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1376</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 3</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>NEXT_ActionDate</name>
+        <rename>NEXT_ActionDate</rename>
+        <type>String</type>
+        <length>10</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1120</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Sort rows</name>
     <type>SortRows</type>
     <description/>
@@ -2043,98 +2001,6 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
     </GUI>
   </step>
   <step>
-    <name>Sort rows 5</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>customerid</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1040</xloc>
-      <yloc>128</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 6</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>C_ID</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-      <field>
-        <name>ActionDate</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>960</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>TaxRate</name>
     <type>TableInput</type>
     <description/>
@@ -2211,8 +2077,8 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
     </GUI>
   </step>
   <step>
-    <name>Analytic query</name>
-    <type>AnalyticQuery</type>
+    <name>DimCustomer 2</name>
+    <type>TableOutput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -2221,17 +2087,139 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <group>
-      <field>
-        <name>C_ID</name>
-      </field>
-    </group>
+    <connection>DW</connection>
+    <schema/>
+    <table>dimcustomer</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
     <fields>
       <field>
-        <aggregate>NEXT_ActionDate</aggregate>
-        <subject>ActionDate</subject>
-        <type>LEAD</type>
-        <valuefield>1</valuefield>
+        <column_name>AddressLine1</column_name>
+        <stream_name>C_ADLINE1</stream_name>
+      </field>
+      <field>
+        <column_name>AddressLine2</column_name>
+        <stream_name>C_ADLINE2</stream_name>
+      </field>
+      <field>
+        <column_name>BatchID</column_name>
+        <stream_name>BatchID</stream_name>
+      </field>
+      <field>
+        <column_name>City</column_name>
+        <stream_name>C_CITY</stream_name>
+      </field>
+      <field>
+        <column_name>Country</column_name>
+        <stream_name>C_CTRY</stream_name>
+      </field>
+      <field>
+        <column_name>CustomerID</column_name>
+        <stream_name>C_ID</stream_name>
+      </field>
+      <field>
+        <column_name>DOB</column_name>
+        <stream_name>C_DOB</stream_name>
+      </field>
+      <field>
+        <column_name>EffectiveDate</column_name>
+        <stream_name>ActionDate</stream_name>
+      </field>
+      <field>
+        <column_name>Email1</column_name>
+        <stream_name>C_PRIM_EMAIL</stream_name>
+      </field>
+      <field>
+        <column_name>Email2</column_name>
+        <stream_name>C_ALT_EMAIL</stream_name>
+      </field>
+      <field>
+        <column_name>EndDate</column_name>
+        <stream_name>EndDate_NEW</stream_name>
+      </field>
+      <field>
+        <column_name>FirstName</column_name>
+        <stream_name>C_F_NAME</stream_name>
+      </field>
+      <field>
+        <column_name>Gender</column_name>
+        <stream_name>C_GNDR</stream_name>
+      </field>
+      <field>
+        <column_name>IsCurrent</column_name>
+        <stream_name>IsCurrent_NEW</stream_name>
+      </field>
+      <field>
+        <column_name>LastName</column_name>
+        <stream_name>C_L_NAME</stream_name>
+      </field>
+      <field>
+        <column_name>LocalTaxRate</column_name>
+        <stream_name>tx_rate_l</stream_name>
+      </field>
+      <field>
+        <column_name>LocalTaxRateDesc</column_name>
+        <stream_name>tx_name_l</stream_name>
+      </field>
+      <field>
+        <column_name>MiddleInitial</column_name>
+        <stream_name>C_M_NAME</stream_name>
+      </field>
+      <field>
+        <column_name>NationalTaxRate</column_name>
+        <stream_name>tx_rate_n</stream_name>
+      </field>
+      <field>
+        <column_name>NationalTaxRateDesc</column_name>
+        <stream_name>tx_name_n</stream_name>
+      </field>
+      <field>
+        <column_name>Phone1</column_name>
+        <stream_name>Phone</stream_name>
+      </field>
+      <field>
+        <column_name>Phone2</column_name>
+        <stream_name>Phone2</stream_name>
+      </field>
+      <field>
+        <column_name>Phone3</column_name>
+        <stream_name>Phone3</stream_name>
+      </field>
+      <field>
+        <column_name>PostalCode</column_name>
+        <stream_name>C_ZIPCODE</stream_name>
+      </field>
+      <field>
+        <column_name>SK_CustomerID</column_name>
+        <stream_name>SK_CustomerID</stream_name>
+      </field>
+      <field>
+        <column_name>StateProv</column_name>
+        <stream_name>C_STATE_PROV</stream_name>
+      </field>
+      <field>
+        <column_name>Status</column_name>
+        <stream_name>Status</stream_name>
+      </field>
+      <field>
+        <column_name>TaxID</column_name>
+        <stream_name>C_TAX_ID</stream_name>
+      </field>
+      <field>
+        <column_name>Tier</column_name>
+        <stream_name>C_TIER</stream_name>
       </field>
     </fields>
     <attributes/>
@@ -2243,442 +2231,7 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1232</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Filter rows by date</name>
-    <type>FilterRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <send_true_to>Analytic query</send_true_to>
-    <send_false_to/>
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <leftvalue>ActionDate</leftvalue>
-        <function>&gt;</function>
-        <rightvalue>effectivedate</rightvalue>
-      </condition>
-    </compare>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1136</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Modified JavaScript value</name>
-    <type>ScriptValueMod</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <compatible>N</compatible>
-    <optimizationLevel>9</optimizationLevel>
-    <jsScripts>
-      <jsScript>
-        <jsScript_type>0</jsScript_type>
-        <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>var AddressLine1_NEW
-if(C_ADLINE1 == null) AddressLine1_NEW = addressline1
-else AddressLine1_NEW = C_ADLINE1
-
-var AddressLine2_NEW
-if(C_ADLINE2 == null) AddressLine2_NEW = addressline2
-else AddressLine2_NEW = C_ADLINE2
-
-var Phone1_NEW
-if(Phone == null) Phone1_NEW = phone1
-else Phone1_NEW = Phone
-
-var Phone2_NEW
-if(Phone2 == null) Phone2_NEW = phone2_1
-else Phone2_NEW = Phone2
-
-var Phone3_NEW
-if(Phone3 == null) Phone3_NEW = phone3_1
-else Phone3_NEW = Phone3
-
-var Emai1_NEW
-if(C_PRIM_EMAIL == null) Emai1_NEW = email1
-else Emai1_NEW = C_PRIM_EMAIL
-
-var Email2_NEW
-if(C_ALT_EMAIL == null) Email2_NEW = email2
-else Email2_NEW = C_ALT_EMAIL
-
-var Status_NEW
-if(Status == null) Status_NEW = status_1
-else Status_NEW = Status
-
-var Gender_NEW
-if(Gender == null) Gender_NEW = gender_1
-else Gender_NEW = Gender
-
-var Status_NEW
-if(Status == null) Status_NEW = status_1
-else Status_NEW = Status
-
-var PostalCode_NEW
-if(C_ZIPCODE == null) PostalCode_NEW = postalcode
-else PostalCode_NEW = C_ZIPCODE
-
-var City_NEW
-if(C_CITY == null) City_NEW = city
-else City_NEW = C_CITY
-
-var StateProv_NEW
-if(C_STATE_PROV == null) StateProv_NEW = stateprov
-else StateProv_NEW = C_STATE_PROV
-
-var Country_NEW
-if(C_CTRY == null) Country_NEW = country
-else Country_NEW = C_CTRY
-
-var NationalTaxRateDesc_NEW
-if(tx_name_n == null) NationalTaxRateDesc_NEW = nationaltaxratedesc
-else NationalTaxRateDesc_NEW = tx_name_n
-
-var NationalTaxRate_NEW
-if(tx_rate_n == null) NationalTaxRate_NEW = nationaltaxrate
-else NationalTaxRate_NEW = tx_rate_n
-
-var LocalTaxRateDesc_NEW
-if(tx_name_l == null) LocalTaxRateDesc_NEW = localtaxratedesc
-else LocalTaxRateDesc_NEW = tx_name_l
-
-
-var LocalTaxRate_NEW
-if(tx_rate_l == null) LocalTaxRate_NEW = localtaxrate
-else LocalTaxRate_NEW = tx_rate_l
-
-var Tier_NEW
-if(C_TIER == null) Tier_NEW = tier
-else Tier_NEW = C_TIER
-
-var IsCurrent_NEW
-var EndDate_NEW
-if( NEXT_ActionDate == null) 
-{
-	EndDate_NEW = "9999-12-31"
-	IsCurrent_NEW = 'True'
-}
-else 
-{
-	EndDate_NEW = NEXT_ActionDate	
-	IsCurrent_NEW = 'False'
-}
-</jsScript_script>
-      </jsScript>
-    </jsScripts>
-    <fields>
-      <field>
-        <name>AddressLine1_NEW</name>
-        <rename>AddressLine1_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>AddressLine2_NEW</name>
-        <rename>AddressLine2_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Phone1_NEW</name>
-        <rename>Phone1_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Phone2_NEW</name>
-        <rename>Phone2_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Phone3_NEW</name>
-        <rename>Phone3_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Emai1_NEW</name>
-        <rename>Emai1_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Email2_NEW</name>
-        <rename>Email2_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Status_NEW</name>
-        <rename>Status_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Gender_NEW</name>
-        <rename>Gender_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Status_NEW</name>
-        <rename>Status_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>PostalCode_NEW</name>
-        <rename>PostalCode_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>City_NEW</name>
-        <rename>City_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>StateProv_NEW</name>
-        <rename>StateProv_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Country_NEW</name>
-        <rename>Country_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>NationalTaxRateDesc_NEW</name>
-        <rename>NationalTaxRateDesc_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>NationalTaxRate_NEW</name>
-        <rename>NationalTaxRate_NEW</rename>
-        <type>Number</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>LocalTaxRateDesc_NEW</name>
-        <rename>LocalTaxRateDesc_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>LocalTaxRate_NEW</name>
-        <rename>LocalTaxRate_NEW</rename>
-        <type>Number</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Tier_NEW</name>
-        <rename>Tier_NEW</rename>
-        <type>Integer</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>IsCurrent_NEW</name>
-        <rename>IsCurrent_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>EndDate_NEW</name>
-        <rename>EndDate_NEW</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1488</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values 2</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-      <meta>
-        <name>IsCurrent_NEW</name>
-        <rename>IsCurrent_NEW</rename>
-        <type>Boolean</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>
-      <meta>
-        <name>EndDate_NEW</name>
-        <rename>EndDate_NEW</rename>
-        <type>Date</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask>yyyy-MM-dd</conversion_mask>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1600</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values 3</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-      <meta>
-        <name>NEXT_ActionDate</name>
-        <rename>NEXT_ActionDate</rename>
-        <type>String</type>
-        <length>10</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1344</xloc>
+      <xloc>1712</xloc>
       <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
