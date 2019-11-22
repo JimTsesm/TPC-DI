@@ -493,11 +493,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Filter ActionType</from>
-      <to>Gender Uppercase</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Gender Uppercase</from>
       <to>Produce Fields</to>
       <enabled>Y</enabled>
@@ -575,6 +570,31 @@
     <hop>
       <from>Merge join 2</from>
       <to>Add systemic fields</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Invalid Tier</from>
+      <to>Create Message</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Create Message</from>
+      <to>Get system info</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Get system info</from>
+      <to>DImessages</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filter ActionType</from>
+      <to>Gender Uppercase</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Gender Uppercase</from>
+      <to>Invalid Tier</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -687,7 +707,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <filename>C:\Users\Alex\Desktop\Jim Profile\Studies\BDMA\Courses\Data warehouses\TPC-DI\produced_dataset\produced_dataset\Batch1\CustomerMgmt.txt</filename>
+    <filename>${files_path}\CustomerMgmt.txt</filename>
     <filename_field/>
     <rownum_field/>
     <include_filename>N</include_filename>
@@ -1114,6 +1134,162 @@
     </GUI>
   </step>
   <step>
+    <name>Create Message</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>var MessageSource;
+MessageSource = "DimCustomer";
+
+var MessageType;
+MessageType = "Alert";
+
+var MessageText;
+MessageText = "Invalid customer tier";
+
+var MessageData;
+MessageData = "CID = "+C_ID+", C_TIER = "+C_TIER;
+
+var Bacth = 1;</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>MessageSource</name>
+        <rename>MessageSource</rename>
+        <type>String</type>
+        <length>30</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>MessageType</name>
+        <rename>MessageType</rename>
+        <type>String</type>
+        <length>12</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>MessageText</name>
+        <rename>MessageText</rename>
+        <type>String</type>
+        <length>50</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>MessageData</name>
+        <rename>MessageData</rename>
+        <type>String</type>
+        <length>100</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>Bacth</name>
+        <rename>Bacth</rename>
+        <type>Integer</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>368</xloc>
+      <yloc>448</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>DImessages</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>DW</connection>
+    <schema/>
+    <table>dimessages</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>messagedateandtime</column_name>
+        <stream_name>timstamp</stream_name>
+      </field>
+      <field>
+        <column_name>batchid</column_name>
+        <stream_name>Bacth</stream_name>
+      </field>
+      <field>
+        <column_name>messagesource</column_name>
+        <stream_name>MessageSource</stream_name>
+      </field>
+      <field>
+        <column_name>messagetext</column_name>
+        <stream_name>MessageText</stream_name>
+      </field>
+      <field>
+        <column_name>messagetype</column_name>
+        <stream_name>MessageType</stream_name>
+      </field>
+      <field>
+        <column_name>messagedata</column_name>
+        <stream_name>MessageData</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>608</xloc>
+      <yloc>448</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>DimCustomer</name>
     <type>TableOutput</type>
     <description/>
@@ -1312,7 +1488,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>224</xloc>
+      <xloc>192</xloc>
       <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1321,7 +1497,7 @@
     <name>Gender Uppercase</name>
     <type>StringOperations</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution/>
     <copies>1</copies>
     <partitioning>
@@ -1380,6 +1556,123 @@
     <GUI>
       <xloc>368</xloc>
       <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Get system info</name>
+    <type>SystemInfo</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>timstamp</name>
+        <type>system date (variable)</type>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>496</xloc>
+      <yloc>448</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Invalid Tier</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <send_true_to>Create Message</send_true_to>
+    <send_false_to/>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <conditions>
+          <condition>
+            <negated>N</negated>
+            <leftvalue>C_TIER</leftvalue>
+            <function>&lt;></function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>Integer</type>
+              <text>1</text>
+              <length>-1</length>
+              <precision>0</precision>
+              <isnull>N</isnull>
+              <mask>####0;-####0</mask>
+            </value>
+          </condition>
+          <condition>
+            <negated>N</negated>
+            <operator>AND</operator>
+            <conditions>
+              <condition>
+                <negated>N</negated>
+                <leftvalue>C_TIER</leftvalue>
+                <function>&lt;></function>
+                <rightvalue/>
+                <value>
+                  <name>constant</name>
+                  <type>Integer</type>
+                  <text>2</text>
+                  <length>-1</length>
+                  <precision>0</precision>
+                  <isnull>N</isnull>
+                  <mask>####0;-####0</mask>
+                </value>
+              </condition>
+              <condition>
+                <negated>N</negated>
+                <operator>AND</operator>
+                <leftvalue>C_TIER</leftvalue>
+                <function>&lt;></function>
+                <rightvalue/>
+                <value>
+                  <name>constant</name>
+                  <type>Integer</type>
+                  <text>3</text>
+                  <length>-1</length>
+                  <precision>0</precision>
+                  <isnull>N</isnull>
+                  <mask>####0;-####0</mask>
+                </value>
+              </condition>
+            </conditions>
+          </condition>
+        </conditions>
+      </condition>
+    </compare>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>368</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

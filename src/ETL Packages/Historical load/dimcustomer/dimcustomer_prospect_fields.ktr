@@ -577,6 +577,69 @@ WHERE ISCURRENT = TRUE</sql>
     </GUI>
   </step>
   <step>
+    <name>MarketingNameplate</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>//Script here
+
+var tag;
+
+if ((NetWorth > 1000000) || (Income > 200000)) {tag = 'HighValue';}
+
+if ((NumberChildren > 3) || (NumberCreditCards > 5) &amp;&amp; (tag == '')) {tag = 'Expenses';}
+else if ((NumberChildren > 3) || (NumberCreditCards > 5) &amp;&amp; (tag != '')) {tag = tag + '+ Expenses';}
+
+if ((Age > 45) &amp;&amp; (tag == '')) {tag = 'Boomer';}
+else if ((Age > 45) &amp;&amp; (tag != '')) {tag = tag + '+ Boomer';}
+
+if ((Income &lt; 50000) || (CreditRating &lt; 600) || (NetWorth &lt; 100000) &amp;&amp; (tag == '')) {tag = 'MoneyAlert';}
+else if ((Income &lt; 50000) || (CreditRating &lt; 600) || (NetWorth &lt; 100000) &amp;&amp; (tag != '')) {tag = tag + '+ MoneyAlert';}
+
+if ((NumberCars > 3) || (NumberCreditCards > 7) &amp;&amp; (tag == '')) {tag = 'Spender';}
+else if ((NumberCars > 3) || (NumberCreditCards > 7) &amp;&amp; (tag != '')) {tag = tag + '+ Spender';}
+
+if ((Age &lt; 25) &amp;&amp; (NetWorth > 1000000) &amp;&amp; (tag == '')) {tag = 'Inherited';}
+else if ((Age &lt; 25) &amp;&amp; (NetWorth > 1000000) &amp;&amp; (tag != '')) {tag = tag + '+ Inherited';}</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>tag</name>
+        <rename>tag</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>304</xloc>
+      <yloc>16</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Merge join 2</name>
     <type>MergeJoin</type>
     <description/>
@@ -657,7 +720,7 @@ WHERE ISCURRENT = TRUE</sql>
     <length>Characters</length>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>C:\Users\Alex\Desktop\Jim Profile\Studies\BDMA\Courses\Data warehouses\TPC-DI\produced_dataset\produced_dataset\Batch1\Prospect.csv</name>
+      <name>${files_path}\Prospect.csv</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>
@@ -1039,6 +1102,52 @@ WHERE ISCURRENT = TRUE</sql>
     </GUI>
   </step>
   <step>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>addressline1</name>
+      </field>
+      <field>
+        <name>addressline2</name>
+      </field>
+      <field>
+        <name>firstname</name>
+      </field>
+      <field>
+        <name>lastname</name>
+      </field>
+      <field>
+        <name>postalcode</name>
+      </field>
+      <field>
+        <name>sk_customerid</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>112</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Sort rows</name>
     <type>SortRows</type>
     <description/>
@@ -1183,138 +1292,6 @@ WHERE ISCURRENT = TRUE</sql>
     <GUI>
       <xloc>496</xloc>
       <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Trim</name>
-    <type>StringOperations</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <in_stream_name>LastName</in_stream_name>
-        <out_stream_name>LastName_new</out_stream_name>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-      <field>
-        <in_stream_name>FirstName</in_stream_name>
-        <out_stream_name>FirstName_new</out_stream_name>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-      <field>
-        <in_stream_name>PostalCode</in_stream_name>
-        <out_stream_name>PostalCode_new</out_stream_name>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>400</xloc>
-      <yloc>16</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Trim 2</name>
-    <type>StringOperations</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <in_stream_name>lastname</in_stream_name>
-        <out_stream_name>lastname_new</out_stream_name>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-      <field>
-        <in_stream_name>firstname</in_stream_name>
-        <out_stream_name>firstname_new</out_stream_name>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-      <field>
-        <in_stream_name>postalcode</in_stream_name>
-        <out_stream_name>postalcode_new</out_stream_name>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>176</xloc>
-      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1521,6 +1498,138 @@ WHERE ISCURRENT = TRUE</sql>
     </GUI>
   </step>
   <step>
+    <name>Trim</name>
+    <type>StringOperations</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <in_stream_name>LastName</in_stream_name>
+        <out_stream_name>LastName_new</out_stream_name>
+        <trim_type>both</trim_type>
+        <lower_upper>none</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+      <field>
+        <in_stream_name>FirstName</in_stream_name>
+        <out_stream_name>FirstName_new</out_stream_name>
+        <trim_type>both</trim_type>
+        <lower_upper>none</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+      <field>
+        <in_stream_name>PostalCode</in_stream_name>
+        <out_stream_name>PostalCode_new</out_stream_name>
+        <trim_type>both</trim_type>
+        <lower_upper>none</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>400</xloc>
+      <yloc>16</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Trim 2</name>
+    <type>StringOperations</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <in_stream_name>lastname</in_stream_name>
+        <out_stream_name>lastname_new</out_stream_name>
+        <trim_type>both</trim_type>
+        <lower_upper>none</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+      <field>
+        <in_stream_name>firstname</in_stream_name>
+        <out_stream_name>firstname_new</out_stream_name>
+        <trim_type>both</trim_type>
+        <lower_upper>none</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+      <field>
+        <in_stream_name>postalcode</in_stream_name>
+        <out_stream_name>postalcode_new</out_stream_name>
+        <trim_type>both</trim_type>
+        <lower_upper>none</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>176</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Update DimCustomer</name>
     <type>InsertUpdate</type>
     <description/>
@@ -1575,121 +1684,6 @@ WHERE ISCURRENT = TRUE</sql>
     <GUI>
       <xloc>672</xloc>
       <yloc>176</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>addressline1</name>
-        <rename/>
-      </field>
-      <field>
-        <name>addressline2</name>
-        <rename/>
-      </field>
-      <field>
-        <name>firstname</name>
-        <rename/>
-      </field>
-      <field>
-        <name>lastname</name>
-        <rename/>
-      </field>
-      <field>
-        <name>postalcode</name>
-        <rename/>
-      </field>
-      <field>
-        <name>sk_customerid</name>
-        <rename/>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>112</xloc>
-      <yloc>176</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>MarketingNameplate</name>
-    <type>ScriptValueMod</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <compatible>N</compatible>
-    <optimizationLevel>9</optimizationLevel>
-    <jsScripts>
-      <jsScript>
-        <jsScript_type>0</jsScript_type>
-        <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>//Script here
-
-var tag;
-
-if ((NetWorth > 1000000) || (Income > 200000)) {tag = 'HighValue';}
-
-if ((NumberChildren > 3) || (NumberCreditCards > 5) &amp;&amp; (tag == '')) {tag = 'Expenses';}
-else if ((NumberChildren > 3) || (NumberCreditCards > 5) &amp;&amp; (tag != '')) {tag = tag + '+ Expenses';}
-
-if ((Age > 45) &amp;&amp; (tag == '')) {tag = 'Boomer';}
-else if ((Age > 45) &amp;&amp; (tag != '')) {tag = tag + '+ Boomer';}
-
-if ((Income &lt; 50000) || (CreditRating &lt; 600) || (NetWorth &lt; 100000) &amp;&amp; (tag == '')) {tag = 'MoneyAlert';}
-else if ((Income &lt; 50000) || (CreditRating &lt; 600) || (NetWorth &lt; 100000) &amp;&amp; (tag != '')) {tag = tag + '+ MoneyAlert';}
-
-if ((NumberCars > 3) || (NumberCreditCards > 7) &amp;&amp; (tag == '')) {tag = 'Spender';}
-else if ((NumberCars > 3) || (NumberCreditCards > 7) &amp;&amp; (tag != '')) {tag = tag + '+ Spender';}
-
-if ((Age &lt; 25) &amp;&amp; (NetWorth > 1000000) &amp;&amp; (tag == '')) {tag = 'Inherited';}
-else if ((Age &lt; 25) &amp;&amp; (NetWorth > 1000000) &amp;&amp; (tag != '')) {tag = tag + '+ Inherited';}</jsScript_script>
-      </jsScript>
-    </jsScripts>
-    <fields>
-      <field>
-        <name>tag</name>
-        <rename>tag</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>304</xloc>
-      <yloc>16</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

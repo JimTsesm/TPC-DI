@@ -539,7 +539,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <filename>C:\Users\Alex\Desktop\Jim Profile\Studies\BDMA\Courses\Data warehouses\TPC-DI\produced_dataset\produced_dataset\Batch1\CustomerMgmt.txt</filename>
+    <filename>${files_path}\CustomerMgmt.txt</filename>
     <filename_field/>
     <rownum_field/>
     <include_filename>N</include_filename>
