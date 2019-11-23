@@ -361,7 +361,7 @@
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>Load DimCustomer</name>
+      <name>Historical Update DimCustomer</name>
       <description/>
       <type>TRANS</type>
       <attributes/>
@@ -444,8 +444,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>832</xloc>
-      <yloc>208</yloc>
+      <xloc>1184</xloc>
+      <yloc>32</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -487,7 +487,7 @@
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>Find the max DimCustomer SRGT 2</name>
+      <name>Find the max DimCustomer SRGT</name>
       <description/>
       <type>TRANS</type>
       <attributes/>
@@ -520,8 +520,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>992</xloc>
-      <yloc>208</yloc>
+      <xloc>1184</xloc>
+      <yloc>112</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -784,29 +784,160 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
       <yloc>208</yloc>
       <attributes_kjc/>
     </entry>
+    <entry>
+      <name>Find the max DimAccount SRGT</name>
+      <description/>
+      <type>TRANS</type>
+      <attributes/>
+      <specification_method>filename</specification_method>
+      <trans_object_id/>
+      <filename>${Internal.Entry.Current.Directory}/maxDimAccountSrgt.ktr</filename>
+      <transname/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name/>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <logging_remote_work>N</logging_remote_work>
+      <run_configuration>Pentaho local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>672</xloc>
+      <yloc>208</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>Historical Update DimAccount</name>
+      <description/>
+      <type>TRANS</type>
+      <attributes/>
+      <specification_method>filename</specification_method>
+      <trans_object_id/>
+      <filename>${Internal.Entry.Current.Directory}/dimaccount_updatet.ktr</filename>
+      <transname/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name/>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <logging_remote_work>N</logging_remote_work>
+      <run_configuration>Pentaho local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>864</xloc>
+      <yloc>208</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>Recursively update DimAccount</name>
+      <description/>
+      <type>SQL</type>
+      <attributes/>
+      <sql>with RECURSIVE temp as(
+	select ROW_NUMBER () OVER (
+        PARTITION BY accountid
+      	ORDER BY effectivedate, enddate
+        ) as rn,
+		*
+	from dimaccount
+),new_dimaccount as(
+	select * from temp
+	where rn = 1 
+	union
+	select 
+		b.rn
+		,b.SK_AccountID
+		,b.accountid
+		,case when b.SK_BrokerID is null then a.SK_BrokerID else b.SK_BrokerID end as SK_BrokerID
+		,b.SK_CustomerID
+		,case when b.Status is null then a.Status else b.Status end as Status
+		,case when b.AccountDesc is null then a.AccountDesc else b.AccountDesc end as AccountDesc
+		,case when b.TaxStatus is null then a.TaxStatus else b.TaxStatus end as TaxStatus
+		,b.IsCurrent
+		,b.BatchID
+		,b.effectivedate
+		,b.enddate
+	from temp b inner join new_dimaccount a on a.rn = b.rn-1 and a.accountid = b.accountid
+)
+
+
+update dimaccount as old_acc
+set SK_BrokerID = new_acc.SK_BrokerID  ,
+Status = new_acc.Status  ,
+AccountDesc = new_acc.AccountDesc  ,
+TaxStatus = new_acc.TaxStatus
+from  new_dimaccount as new_acc
+where new_acc.SK_AccountID = old_acc.SK_AccountID</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>DW</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>720</xloc>
+      <yloc>336</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>Set specific columns to NOT NULL 2</name>
+      <description/>
+      <type>SQL</type>
+      <attributes/>
+      <sql>ALTER TABLE dimaccount ALTER COLUMN Status  SET NOT NULL;
+ALTER TABLE dimaccount ALTER COLUMN TaxStatus  SET NOT NULL;
+ALTER TABLE dimaccount ALTER COLUMN SK_BrokerID  SET NOT NULL;
+</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>DW</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>556</xloc>
+      <yloc>485</yloc>
+      <attributes_kjc/>
+    </entry>
   </entries>
   <hops>
     <hop>
-      <from>Close old records</from>
-      <to>Find the max DimCustomer SRGT 2</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>Find the max DimCustomer SRGT 2</from>
-      <to>Load DimCustomer</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>Load DimCustomer</from>
-      <to>Recursively update DimCustomer</to>
+      <from>Find the max DimCustomer SRGT</from>
+      <to>Historical Update DimCustomer</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -841,15 +972,6 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Start</from>
-      <to>Set variables</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
-    </hop>
-    <hop>
       <from>Set variables</from>
       <to>GetBatchDate</to>
       <from_nr>0</from_nr>
@@ -877,7 +999,70 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
       <unconditional>N</unconditional>
     </hop>
     <hop>
+      <from>Close old records</from>
+      <to>Find the max DimCustomer SRGT</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
       <from>DimAccount- Initial load</from>
+      <to>Find the max DimAccount SRGT</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Historical Update DimAccount</from>
+      <to>Recursively update DimAccount</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Recursively update DimAccount</from>
+      <to>Set specific columns to NOT NULL 2</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Start</from>
+      <to>Set variables</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Historical Update DimCustomer</from>
+      <to>Historical Update DimAccount</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>N</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Set specific columns to NOT NULL 2</from>
+      <to>Recursively update DimCustomer</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Find the max DimAccount SRGT</from>
       <to>Close old records</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>

@@ -58,18 +58,18 @@ CREATE UNIQUE INDEX UI_DimCustomer ON DimCustomer (CustomerID, EffectiveDate);
 CREATE TABLE DimAccount  ( 
 SK_AccountID  INTEGER NOT NULL PRIMARY KEY,
 AccountID  INTEGER NOT NULL,
-SK_BrokerID  INTEGER NOT NULL REFERENCES DimBroker (SK_BrokerID),
+SK_BrokerID  INTEGER NULL REFERENCES DimBroker (SK_BrokerID),
 SK_CustomerID  INTEGER NOT NULL REFERENCES DimCustomer (SK_CustomerID),
-Status       CHAR(10) NOT NULL,
+Status       CHAR(10) NULL,
 AccountDesc       varchar(50),
-TaxStatus  INTEGER NOT NULL CHECK (TaxStatus = 0 OR TaxStatus = 1 OR TaxStatus = 2),
+TaxStatus  INTEGER NULL CHECK (TaxStatus = 0 OR TaxStatus = 1 OR TaxStatus = 2),
 IsCurrent boolean NOT NULL,
 BatchID INTEGER NOT NULL,
 EffectiveDate date NOT NULL,
 EndDate date NOT NULL
 );
 
-CREATE UNIQUE INDEX UI_DimAccount ON DimAccount (AccountID, EffectiveDate);
+CREATE UNIQUE INDEX UI_DimAccount ON DimAccount (AccountID, EndDate);
 
 CREATE TABLE DimCompany (   
 SK_CompanyID INTEGER NOT NULL PRIMARY KEY, 

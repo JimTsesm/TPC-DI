@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>dimcustomer_updates</name>
+    <name>dimaccount_updatet</name>
     <description/>
     <extended_description/>
     <trans_version/>
     <trans_type>Normal</trans_type>
-    <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
     </parameters>
@@ -428,9 +427,9 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2019/11/16 08:57:43.698</created_date>
+    <created_date>2019/11/23 09:49:39.121</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2019/11/16 08:57:43.698</modified_date>
+    <modified_date>2019/11/23 09:49:39.121</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -489,13 +488,13 @@
   </connection>
   <order>
     <hop>
-      <from>CSV file input</from>
-      <to>Filter ActionType</to>
+      <from>Sort rows 5</from>
+      <to>Analytic query</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Gender Uppercase</from>
-      <to>Produce Fields</to>
+      <from>Modified JavaScript value</from>
+      <to>Close old records</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -504,13 +503,43 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Sort rows</from>
-      <to>Merge join</to>
+      <from>Add sequence</from>
+      <to>UPDACCT OR CLOSEACCT</to>
+      <enabled>N</enabled>
+    </hop>
+    <hop>
+      <from>UPDACCT OR CLOSEACCT</from>
+      <to>DimAccount</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>TaxRate</from>
-      <to>Remove spaces from key</to>
+      <from>DimBroker</from>
+      <to>Sort rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>DimCustomer</from>
+      <to>Sort rows 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Merge join 3</from>
+      <to>Sort rows 2 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows 3</from>
+      <to>Merge join 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Close old records</from>
+      <to>Sort rows 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows</from>
+      <to>Merge join 3</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -519,52 +548,17 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Remove spaces from key</from>
-      <to>Rename 1</to>
+      <from>UPDACCT OR CLOSEACCT</from>
+      <to>Add systemic fields 2</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Rename 1</from>
-      <to>Sort rows</to>
+      <from>Add systemic fields 2</from>
+      <to>DimAccount 2</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Rename 1 2</from>
-      <to>Sort rows 3</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Remove spaces from key</from>
-      <to>Rename 1 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Merge join</from>
-      <to>Sort rows 4</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Sort rows 4</from>
-      <to>Merge join 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Sort rows 3</from>
-      <to>Merge join 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Select values</from>
-      <to>Sort rows 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Produce Fields</from>
-      <to>Select values</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Modified JavaScript value</from>
+      <from>Produce Effective and End Dates</from>
       <to>Select values 2</to>
       <enabled>Y</enabled>
     </hop>
@@ -584,98 +578,98 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Filter ActionType</from>
-      <to>Gender Uppercase</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add sequence</from>
-      <to>UPDCUST OR INACT</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>UPDCUST OR INACT</from>
-      <to>Add systemic fields 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add systemic fields 2</from>
-      <to>DimCustomer</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Sort rows 5</from>
-      <to>Analytic query</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Invalid Tier</from>
-      <to>Create Message</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Create Message</from>
-      <to>Get system info</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Get system info</from>
-      <to>DImessages</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Gender Uppercase</from>
-      <to>Invalid Tier</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>DimCustomer Current</from>
+      <from>DimAccount 3</from>
       <to>Sort rows 6</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join 2</from>
-      <to>Sort rows 7</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Sort rows 7</from>
-      <to>Merge join 3</to>
+      <to>Merge join 2</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Sort rows 6</from>
-      <to>Merge join 3</to>
+      <to>Merge join 2</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join 3</from>
+      <from>Filter rows</from>
+      <to>Sort rows 7</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows 2 2</from>
+      <to>Merge join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Merge join</from>
+      <to>Produce Effective and End Dates</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Produce Fields</from>
+      <to>Select values</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows 4</from>
+      <to>Merge join 4</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows 2</from>
+      <to>Merge join 4</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Merge join 4</from>
+      <to>Filter rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>CSV file input</from>
+      <to>Select values 6</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Merge join 2</from>
+      <to>Select values 5</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values 6</from>
+      <to>Produce Fields</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values</from>
+      <to>Update or Close Account</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Update or Close Account</from>
+      <to>Filter rows 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Update or Close Account</from>
       <to>Sort rows 5</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>UPDCUST OR INACT</from>
-      <to>DimCustomer 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>DimCustomer 2</from>
-      <to>Filter rows</to>
-      <enabled>N</enabled>
-    </hop>
-    <hop>
-      <from>Filter rows</from>
-      <to>Update DimAccount</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>DimCustomer</from>
-      <to>Filter rows 2</to>
-      <enabled>N</enabled>
-    </hop>
-    <hop>
       <from>Filter rows 2</from>
-      <to>Update DimAccount 2</to>
+      <to>Select values 4</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values 4</from>
+      <to>Sort rows 4</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values 5</from>
+      <to>Sort rows 5</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -690,14 +684,14 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <valuename>SK_CustomerID</valuename>
+    <valuename>SK_AccountID</valuename>
     <use_database>N</use_database>
     <connection>DW</connection>
     <schema/>
     <seqname>SEQ_</seqname>
     <use_counter>Y</use_counter>
-    <counter_name/>
-    <start_at>${maxDimcustomerSrgt}</start_at>
+    <counter_name>${maxDimaccountSrgt}</counter_name>
+    <start_at>1</start_at>
     <increment_by>1</increment_by>
     <max_value>999999999</max_value>
     <attributes/>
@@ -709,8 +703,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1808</xloc>
-      <yloc>240</yloc>
+      <xloc>912</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -748,8 +742,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1696</xloc>
-      <yloc>240</yloc>
+      <xloc>816</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -787,8 +781,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1808</xloc>
-      <yloc>448</yloc>
+      <xloc>1040</xloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -805,7 +799,7 @@
     </partitioning>
     <group>
       <field>
-        <name>C_ID</name>
+        <name>CA_ID</name>
       </field>
     </group>
     <fields>
@@ -813,6 +807,12 @@
         <aggregate>NEXT_ActionDate</aggregate>
         <subject>ActionDate</subject>
         <type>LEAD</type>
+        <valuefield>1</valuefield>
+      </field>
+      <field>
+        <aggregate>PREV_ActionDate</aggregate>
+        <subject>ActionDate</subject>
+        <type>LAG</type>
         <valuefield>1</valuefield>
       </field>
     </fields>
@@ -825,8 +825,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1184</xloc>
-      <yloc>240</yloc>
+      <xloc>704</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1262,14 +1262,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>32</xloc>
-      <yloc>240</yloc>
+      <xloc>16</xloc>
+      <yloc>80</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Create Message</name>
-    <type>ScriptValueMod</type>
+    <name>Close old records</name>
+    <type>ExecSQL</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1278,69 +1278,32 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <compatible>N</compatible>
-    <optimizationLevel>9</optimizationLevel>
-    <jsScripts>
-      <jsScript>
-        <jsScript_type>0</jsScript_type>
-        <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>var MessageSource;
-MessageSource = "DimCustomer";
-
-var MessageType;
-MessageType = "Alert";
-
-var MessageText;
-MessageText = "Invalid customer tier";
-
-var MessageData;
-MessageData = "CID = "+C_ID+", C_TIER = "+C_TIER;
-
-var Bacth = 1;</jsScript_script>
-      </jsScript>
-    </jsScripts>
-    <fields>
-      <field>
-        <name>MessageSource</name>
-        <rename>MessageSource</rename>
-        <type>String</type>
-        <length>30</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>MessageType</name>
-        <rename>MessageType</rename>
-        <type>String</type>
-        <length>12</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>MessageText</name>
-        <rename>MessageText</rename>
-        <type>String</type>
-        <length>50</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>MessageData</name>
-        <rename>MessageData</rename>
-        <type>String</type>
-        <length>100</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Bacth</name>
-        <rename>Bacth</rename>
-        <type>Integer</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-    </fields>
+    <connection>DW</connection>
+    <execute_each_row>Y</execute_each_row>
+    <single_statement>N</single_statement>
+    <replace_variables>N</replace_variables>
+    <quoteString>N</quoteString>
+    <sql>UPDATE DimAccount
+Set EndDate = ?,
+IsCurrent = 'False'
+WHERE AccountId = ?
+AND ? = 1</sql>
+    <set_params>Y</set_params>
+    <insert_field/>
+    <update_field/>
+    <delete_field/>
+    <read_field/>
+    <arguments>
+      <argument>
+        <name>ActionDate</name>
+      </argument>
+      <argument>
+        <name>CA_ID</name>
+      </argument>
+      <argument>
+        <name>IsFirstRow</name>
+      </argument>
+    </arguments>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1350,13 +1313,13 @@ var Bacth = 1;</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>272</xloc>
-      <yloc>480</yloc>
+      <xloc>1040</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>DImessages</name>
+    <name>DimAccount</name>
     <type>TableOutput</type>
     <description/>
     <distribute>Y</distribute>
@@ -1368,7 +1331,7 @@ var Bacth = 1;</jsScript_script>
     </partitioning>
     <connection>DW</connection>
     <schema/>
-    <table>dimessages</table>
+    <table>dimaccount</table>
     <commit>1000</commit>
     <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
@@ -1385,105 +1348,49 @@ var Bacth = 1;</jsScript_script>
     <return_field/>
     <fields>
       <field>
-        <column_name>messagedateandtime</column_name>
-        <stream_name>timstamp</stream_name>
+        <column_name>accountid</column_name>
+        <stream_name>CA_ID</stream_name>
       </field>
       <field>
-        <column_name>batchid</column_name>
-        <stream_name>Bacth</stream_name>
+        <column_name>accountdesc</column_name>
+        <stream_name>CA_NAME</stream_name>
       </field>
       <field>
-        <column_name>messagesource</column_name>
-        <stream_name>MessageSource</stream_name>
+        <column_name>taxstatus</column_name>
+        <stream_name>CA_TAX_ST</stream_name>
       </field>
       <field>
-        <column_name>messagetext</column_name>
-        <stream_name>MessageText</stream_name>
+        <column_name>status</column_name>
+        <stream_name>Status</stream_name>
       </field>
       <field>
-        <column_name>messagetype</column_name>
-        <stream_name>MessageType</stream_name>
-      </field>
-      <field>
-        <column_name>messagedata</column_name>
-        <stream_name>MessageData</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>512</xloc>
-      <yloc>480</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>DimCustomer</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>DW</connection>
-    <schema/>
-    <table>dimcustomer</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>BatchID</column_name>
-        <stream_name>BatchID</stream_name>
-      </field>
-      <field>
-        <column_name>CustomerID</column_name>
-        <stream_name>C_ID</stream_name>
-      </field>
-      <field>
-        <column_name>EffectiveDate</column_name>
-        <stream_name>ActionDate</stream_name>
-      </field>
-      <field>
-        <column_name>IsCurrent</column_name>
+        <column_name>iscurrent</column_name>
         <stream_name>IsCurrent_NEW</stream_name>
       </field>
       <field>
-        <column_name>SK_CustomerID</column_name>
-        <stream_name>SK_CustomerID</stream_name>
+        <column_name>batchid</column_name>
+        <stream_name>BatchID</stream_name>
       </field>
       <field>
-        <column_name>StateProv</column_name>
-        <stream_name>C_STATE_PROV</stream_name>
-      </field>
-      <field>
-        <column_name>Status</column_name>
-        <stream_name>Status_Inact</stream_name>
+        <column_name>effectivedate</column_name>
+        <stream_name>ActionDate</stream_name>
       </field>
       <field>
         <column_name>enddate</column_name>
         <stream_name>EndDate_NEW</stream_name>
       </field>
+      <field>
+        <column_name>sk_accountid</column_name>
+        <stream_name>SK_AccountID</stream_name>
+      </field>
+      <field>
+        <column_name>sk_customerid</column_name>
+        <stream_name>SK_CustomerID</stream_name>
+      </field>
+      <field>
+        <column_name>sk_brokerid</column_name>
+        <stream_name>sk_brokerid</stream_name>
+      </field>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -1494,13 +1401,13 @@ var Bacth = 1;</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1968</xloc>
-      <yloc>448</yloc>
+      <xloc>1200</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>DimCustomer 2</name>
+    <name>DimAccount 2</name>
     <type>TableOutput</type>
     <description/>
     <distribute>Y</distribute>
@@ -1512,7 +1419,7 @@ var Bacth = 1;</jsScript_script>
     </partitioning>
     <connection>DW</connection>
     <schema/>
-    <table>dimcustomer</table>
+    <table>dimaccount</table>
     <commit>1000</commit>
     <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
@@ -1529,120 +1436,48 @@ var Bacth = 1;</jsScript_script>
     <return_field/>
     <fields>
       <field>
-        <column_name>AddressLine1</column_name>
-        <stream_name>C_ADLINE1</stream_name>
+        <column_name>accountid</column_name>
+        <stream_name>CA_ID</stream_name>
       </field>
       <field>
-        <column_name>AddressLine2</column_name>
-        <stream_name>C_ADLINE2</stream_name>
+        <column_name>accountdesc</column_name>
+        <stream_name>CA_NAME</stream_name>
       </field>
       <field>
-        <column_name>BatchID</column_name>
-        <stream_name>BatchID</stream_name>
+        <column_name>taxstatus</column_name>
+        <stream_name>CA_TAX_ST</stream_name>
       </field>
       <field>
-        <column_name>City</column_name>
-        <stream_name>C_CITY</stream_name>
+        <column_name>status</column_name>
+        <stream_name>Status_Inact</stream_name>
       </field>
       <field>
-        <column_name>Country</column_name>
-        <stream_name>C_CTRY</stream_name>
-      </field>
-      <field>
-        <column_name>CustomerID</column_name>
-        <stream_name>C_ID</stream_name>
-      </field>
-      <field>
-        <column_name>DOB</column_name>
-        <stream_name>C_DOB</stream_name>
-      </field>
-      <field>
-        <column_name>EffectiveDate</column_name>
-        <stream_name>ActionDate</stream_name>
-      </field>
-      <field>
-        <column_name>Email1</column_name>
-        <stream_name>C_PRIM_EMAIL</stream_name>
-      </field>
-      <field>
-        <column_name>Email2</column_name>
-        <stream_name>C_ALT_EMAIL</stream_name>
-      </field>
-      <field>
-        <column_name>EndDate</column_name>
-        <stream_name>EndDate_NEW</stream_name>
-      </field>
-      <field>
-        <column_name>FirstName</column_name>
-        <stream_name>C_F_NAME</stream_name>
-      </field>
-      <field>
-        <column_name>Gender</column_name>
-        <stream_name>C_GNDR</stream_name>
-      </field>
-      <field>
-        <column_name>IsCurrent</column_name>
+        <column_name>iscurrent</column_name>
         <stream_name>IsCurrent_NEW</stream_name>
       </field>
       <field>
-        <column_name>LastName</column_name>
-        <stream_name>C_L_NAME</stream_name>
+        <column_name>batchid</column_name>
+        <stream_name>BatchID</stream_name>
       </field>
       <field>
-        <column_name>LocalTaxRate</column_name>
-        <stream_name>tx_rate_l</stream_name>
+        <column_name>effectivedate</column_name>
+        <stream_name>ActionDate</stream_name>
       </field>
       <field>
-        <column_name>LocalTaxRateDesc</column_name>
-        <stream_name>tx_name_l</stream_name>
+        <column_name>enddate</column_name>
+        <stream_name>EndDate_NEW</stream_name>
       </field>
       <field>
-        <column_name>MiddleInitial</column_name>
-        <stream_name>C_M_NAME</stream_name>
+        <column_name>sk_accountid</column_name>
+        <stream_name>SK_AccountID</stream_name>
       </field>
       <field>
-        <column_name>NationalTaxRate</column_name>
-        <stream_name>tx_rate_n</stream_name>
-      </field>
-      <field>
-        <column_name>NationalTaxRateDesc</column_name>
-        <stream_name>tx_name_n</stream_name>
-      </field>
-      <field>
-        <column_name>Phone1</column_name>
-        <stream_name>Phone</stream_name>
-      </field>
-      <field>
-        <column_name>Phone2</column_name>
-        <stream_name>Phone2</stream_name>
-      </field>
-      <field>
-        <column_name>Phone3</column_name>
-        <stream_name>Phone3</stream_name>
-      </field>
-      <field>
-        <column_name>PostalCode</column_name>
-        <stream_name>C_ZIPCODE</stream_name>
-      </field>
-      <field>
-        <column_name>SK_CustomerID</column_name>
+        <column_name>sk_customerid</column_name>
         <stream_name>SK_CustomerID</stream_name>
       </field>
       <field>
-        <column_name>StateProv</column_name>
-        <stream_name>C_STATE_PROV</stream_name>
-      </field>
-      <field>
-        <column_name>Status</column_name>
-        <stream_name>Status</stream_name>
-      </field>
-      <field>
-        <column_name>TaxID</column_name>
-        <stream_name>C_TAX_ID</stream_name>
-      </field>
-      <field>
-        <column_name>Tier</column_name>
-        <stream_name>C_TIER</stream_name>
+        <column_name>sk_brokerid</column_name>
+        <stream_name>sk_brokerid</stream_name>
       </field>
     </fields>
     <attributes/>
@@ -1654,13 +1489,13 @@ var Bacth = 1;</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1952</xloc>
-      <yloc>336</yloc>
+      <xloc>1200</xloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>DimCustomer Current</name>
+    <name>DimBroker</name>
     <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -1671,10 +1506,8 @@ var Bacth = 1;</jsScript_script>
       <schema_name/>
     </partitioning>
     <connection>DW</connection>
-    <sql>SELECT SK_CustomerID AS OLD_SK_CustomerID,CustomerId
-,EffectiveDate as Old_EffectiveDate  
-FROM DimCustomer
-</sql>
+    <sql>SELECT SK_BrokerID,BrokerID 
+FROM DimBroker</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
@@ -1689,14 +1522,14 @@ FROM DimCustomer
       </output>
     </remotesteps>
     <GUI>
-      <xloc>944</xloc>
-      <yloc>16</yloc>
+      <xloc>1104</xloc>
+      <yloc>304</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Filter ActionType</name>
-    <type>FilterRows</type>
+    <name>DimCustomer</name>
+    <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1705,46 +1538,16 @@ FROM DimCustomer
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <send_true_to>Gender Uppercase</send_true_to>
-    <send_false_to/>
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <conditions>
-          <condition>
-            <negated>N</negated>
-            <leftvalue>ActionType</leftvalue>
-            <function>=</function>
-            <rightvalue/>
-            <value>
-              <name>constant</name>
-              <type>String</type>
-              <text>UPDCUST</text>
-              <length>-1</length>
-              <precision>-1</precision>
-              <isnull>N</isnull>
-              <mask/>
-            </value>
-          </condition>
-          <condition>
-            <negated>N</negated>
-            <operator>OR</operator>
-            <leftvalue>ActionType</leftvalue>
-            <function>=</function>
-            <rightvalue/>
-            <value>
-              <name>constant</name>
-              <type>String</type>
-              <text>INACT</text>
-              <length>-1</length>
-              <precision>-1</precision>
-              <isnull>N</isnull>
-              <mask/>
-            </value>
-          </condition>
-        </conditions>
-      </condition>
-    </compare>
+    <connection>DW</connection>
+    <sql>SELECT SK_CustomerID, CustomerID
+, EffectiveDate as CST_EffectiveDate
+, EndDate as CST_EndDate
+FROM DimCustomer</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1754,8 +1557,8 @@ FROM DimCustomer
       </output>
     </remotesteps>
     <GUI>
-      <xloc>144</xloc>
-      <yloc>240</yloc>
+      <xloc>496</xloc>
+      <yloc>592</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1770,192 +1573,7 @@ FROM DimCustomer
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <send_true_to>Update DimAccount</send_true_to>
-    <send_false_to/>
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <leftvalue>EndDate_NEW</leftvalue>
-        <function>=</function>
-        <rightvalue/>
-        <value>
-          <name>constant</name>
-          <type>Date</type>
-          <text>9999/12/31 00:00:00.000</text>
-          <length>-1</length>
-          <precision>-1</precision>
-          <isnull>N</isnull>
-          <mask>yyyy-MM-dd</mask>
-        </value>
-      </condition>
-    </compare>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1952</xloc>
-      <yloc>256</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Filter rows 2</name>
-    <type>FilterRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <send_true_to>Update DimAccount 2</send_true_to>
-    <send_false_to/>
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <leftvalue>EndDate_NEW</leftvalue>
-        <function>=</function>
-        <rightvalue/>
-        <value>
-          <name>constant</name>
-          <type>Date</type>
-          <text>9999/12/31 00:00:00.000</text>
-          <length>-1</length>
-          <precision>-1</precision>
-          <isnull>N</isnull>
-          <mask>yyyy-MM-dd</mask>
-        </value>
-      </condition>
-    </compare>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1968</xloc>
-      <yloc>528</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Gender Uppercase</name>
-    <type>StringOperations</type>
-    <description/>
-    <distribute>N</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <in_stream_name>C_GNDR</in_stream_name>
-        <out_stream_name>C_GNDR_NEW</out_stream_name>
-        <trim_type>none</trim_type>
-        <lower_upper>upper</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-      <field>
-        <in_stream_name>C_NAT_TX_ID</in_stream_name>
-        <out_stream_name/>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-      <field>
-        <in_stream_name>C_LCL_TX_ID</in_stream_name>
-        <out_stream_name/>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>272</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Get system info</name>
-    <type>SystemInfo</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>timstamp</name>
-        <type>system date (variable)</type>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>400</xloc>
-      <yloc>480</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Invalid Tier</name>
-    <type>FilterRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <send_true_to>Create Message</send_true_to>
+    <send_true_to>Sort rows 7</send_true_to>
     <send_false_to/>
     <compare>
       <condition>
@@ -1963,55 +1581,16 @@ FROM DimCustomer
         <conditions>
           <condition>
             <negated>N</negated>
-            <leftvalue>C_TIER</leftvalue>
-            <function>&lt;></function>
-            <rightvalue/>
-            <value>
-              <name>constant</name>
-              <type>Integer</type>
-              <text>1</text>
-              <length>-1</length>
-              <precision>0</precision>
-              <isnull>N</isnull>
-              <mask>####0;-####0</mask>
-            </value>
+            <leftvalue>ActionDate</leftvalue>
+            <function>&gt;=</function>
+            <rightvalue>cst_effectivedate</rightvalue>
           </condition>
           <condition>
             <negated>N</negated>
             <operator>AND</operator>
-            <conditions>
-              <condition>
-                <negated>N</negated>
-                <leftvalue>C_TIER</leftvalue>
-                <function>&lt;></function>
-                <rightvalue/>
-                <value>
-                  <name>constant</name>
-                  <type>Integer</type>
-                  <text>2</text>
-                  <length>-1</length>
-                  <precision>0</precision>
-                  <isnull>N</isnull>
-                  <mask>####0;-####0</mask>
-                </value>
-              </condition>
-              <condition>
-                <negated>N</negated>
-                <operator>AND</operator>
-                <leftvalue>C_TIER</leftvalue>
-                <function>&lt;></function>
-                <rightvalue/>
-                <value>
-                  <name>constant</name>
-                  <type>Integer</type>
-                  <text>3</text>
-                  <length>-1</length>
-                  <precision>0</precision>
-                  <isnull>N</isnull>
-                  <mask>####0;-####0</mask>
-                </value>
-              </condition>
-            </conditions>
+            <leftvalue>ActionDate</leftvalue>
+            <function>&lt;</function>
+            <rightvalue>cst_enddate</rightvalue>
           </condition>
         </conditions>
       </condition>
@@ -2025,8 +1604,8 @@ FROM DimCustomer
       </output>
     </remotesteps>
     <GUI>
-      <xloc>272</xloc>
-      <yloc>384</yloc>
+      <xloc>256</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2041,77 +1620,9 @@ FROM DimCustomer
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <join_type>LEFT OUTER</join_type>
-    <step1>Sort rows 2</step1>
-    <step2>Sort rows</step2>
-    <keys_1>
-      <key>C_NAT_TX_ID</key>
-    </keys_1>
-    <keys_2>
-      <key>tx_id_n</key>
-    </keys_2>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>624</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Merge join 2</name>
-    <type>MergeJoin</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <join_type>LEFT OUTER</join_type>
-    <step1>Sort rows 4</step1>
-    <step2>Sort rows 3</step2>
-    <keys_1>
-      <key>C_LCL_TX_ID</key>
-    </keys_1>
-    <keys_2>
-      <key>tx_id_l</key>
-    </keys_2>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>784</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Merge join 3</name>
-    <type>MergeJoin</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
     <join_type>INNER</join_type>
-    <step1>Sort rows 7</step1>
-    <step2>Sort rows 6</step2>
+    <step1>Sort rows 2 2</step1>
+    <step2>Sort rows 2</step2>
     <keys_1>
       <key>C_ID</key>
     </keys_1>
@@ -2127,13 +1638,95 @@ FROM DimCustomer
       </output>
     </remotesteps>
     <GUI>
-      <xloc>944</xloc>
-      <yloc>240</yloc>
+      <xloc>496</xloc>
+      <yloc>416</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Merge join 3</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <join_type>LEFT OUTER</join_type>
+    <step1>Sort rows 3</step1>
+    <step2>Sort rows</step2>
+    <keys_1>
+      <key>CA_B_ID</key>
+    </keys_1>
+    <keys_2>
+      <key>brokerid</key>
+    </keys_2>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>704</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
     <name>Modified JavaScript value</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>var IsFirstRow;
+
+if(PREV_ActionDate == null) IsFirstRow = 1
+else IsFirstRow = 0
+</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>IsFirstRow</name>
+        <rename>IsFirstRow</rename>
+        <type>Integer</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>896</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Produce Effective and End Dates</name>
     <type>ScriptValueMod</type>
     <description/>
     <distribute>Y</distribute>
@@ -2191,272 +1784,8 @@ else
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1424</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Produce Fields</name>
-    <type>ScriptValueMod</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <compatible>N</compatible>
-    <optimizationLevel>9</optimizationLevel>
-    <jsScripts>
-      <jsScript>
-        <jsScript_type>0</jsScript_type>
-        <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>var Gender
-if (C_GNDR != 'M' &amp;&amp; C_GNDR != 'F') Gender = 'U'
-else Gender = C_GNDR
-
-var Phone
-if(C_CTRY_CODE != null &amp;&amp; C_AREA_CODE != null &amp;&amp; C_LOCAL != null)	
-{
-	Phone = '+'+C_CTRY_CODE+'('+C_AREA_CODE+')'+C_LOCAL
-	if(C_EXT != null)	Phone += C_EXT
-}
-else if(C_CTRY_CODE == null &amp;&amp; C_AREA_CODE != null &amp;&amp; C_LOCAL != null)	
-{
-	Phone = '('+C_AREA_CODE+')'+C_LOCAL
-	if(C_EXT != null)	Phone += C_EXT
-}
-else if(C_AREA_CODE == null &amp;&amp; C_LOCAL != null)	
-{
-	Phone = +C_LOCAL
-	if(C_EXT != null)	Phone += C_EXT
-}
-else Phone = null
-
-var Phone2
-if(C_CTRY_CODE2 != null &amp;&amp; C_AREA_CODE2 != null &amp;&amp; C_LOCAL2 != null)	
-{
-	Phone2 = '+'+C_CTRY_CODE2+'('+C_AREA_CODE2+')'+C_LOCAL2
-	if(C_EXT2 != null)	Phone2 += C_EXT2
-}
-else if(C_CTRY_CODE2 == null &amp;&amp; C_AREA_CODE2 != null &amp;&amp; C_LOCAL2 != null)	
-{
-	Phone2 = '('+C_AREA_CODE2+')'+C_LOCAL2
-	if(C_EXT2 != null)	Phone2 += C_EXT2
-}
-else if(C_AREA_CODE2 == null &amp;&amp; C_LOCAL2 != null)	
-{
-	Phone2 = +C_LOCAL2
-	if(C_EXT2 != null)	Phone2 += C_EXT2
-}
-else Phone2 = null
-
-var Phone3
-if(C_CTRY_CODE3 != null &amp;&amp; C_AREA_CODE3 != null &amp;&amp; C_LOCAL3 != null)	
-{
-	Phone3 = '+'+C_CTRY_CODE3+'('+C_AREA_CODE3+')'+C_LOCAL3
-	if(C_EXT3 != null)	Phone3 += C_EXT3
-}
-else if(C_CTRY_CODE3 == null &amp;&amp; C_AREA_CODE3 != null &amp;&amp; C_LOCAL3 != null)	
-{
-	Phone3 = '('+C_AREA_CODE3+')'+C_LOCAL3
-	if(C_EXT3 != null)	Phone3 += C_EXT3
-}
-else if(C_AREA_CODE3 == null &amp;&amp; C_LOCAL3 != null)	
-{
-	Phone3 = +C_LOCAL3
-	if(C_EXT3 != null)	Phone3 += C_EXT3
-}
-else Phone3 = null
-
-var Status = 'ACTIVE'
-
-var ActionDate = ActionTS.substr(0,10)</jsScript_script>
-      </jsScript>
-    </jsScripts>
-    <fields>
-      <field>
-        <name>Gender</name>
-        <rename>Gender</rename>
-        <type>String</type>
-        <length>1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Phone</name>
-        <rename>Phone</rename>
-        <type>String</type>
-        <length>30</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Phone2</name>
-        <rename>Phone2</rename>
-        <type>String</type>
-        <length>30</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Phone3</name>
-        <rename>Phone3</rename>
-        <type>String</type>
-        <length>30</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>Status</name>
-        <rename>Status</rename>
-        <type>String</type>
-        <length>6</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>ActionDate</name>
-        <rename>ActionDate</rename>
-        <type>String</type>
-        <length>10</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>368</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Remove spaces from key</name>
-    <type>StringOperations</type>
-    <description/>
-    <distribute>N</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <in_stream_name>tx_id</in_stream_name>
-        <out_stream_name/>
-        <trim_type>both</trim_type>
-        <lower_upper>none</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>720</xloc>
-      <yloc>32</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Rename 1</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>tx_name</name>
-        <rename>tx_name_n</rename>
-      </field>
-      <field>
-        <name>tx_rate</name>
-        <rename>tx_rate_n</rename>
-      </field>
-      <field>
-        <name>tx_id</name>
-        <rename>tx_id_n</rename>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
       <xloc>624</xloc>
-      <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Rename 1 2</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>tx_name</name>
-        <rename>tx_name_l</rename>
-      </field>
-      <field>
-        <name>tx_rate</name>
-        <rename>tx_rate_l</rename>
-      </field>
-      <field>
-        <name>tx_id</name>
-        <rename>tx_id_l</rename>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>784</xloc>
-      <yloc>96</yloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2472,6 +1801,38 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       <schema_name/>
     </partitioning>
     <fields>
+      <field>
+        <name>ActionDate</name>
+        <rename/>
+      </field>
+      <field>
+        <name>ActionType</name>
+        <rename/>
+      </field>
+      <field>
+        <name>CA_B_ID</name>
+        <rename/>
+      </field>
+      <field>
+        <name>CA_ID</name>
+        <rename/>
+      </field>
+      <field>
+        <name>CA_NAME</name>
+        <rename/>
+      </field>
+      <field>
+        <name>CA_TAX_ST</name>
+        <rename/>
+      </field>
+      <field>
+        <name>C_ID</name>
+        <rename/>
+      </field>
+      <field>
+        <name>Status</name>
+        <rename/>
+      </field>
       <select_unspecified>N</select_unspecified>
       <meta>
         <name>ActionDate</name>
@@ -2480,6 +1841,57 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
         <length>-2</length>
         <precision>-2</precision>
         <conversion_mask>yyyy-MM-dd</conversion_mask>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+      <meta>
+        <name>CA_TAX_ST</name>
+        <rename>CA_TAX_ST</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+      <meta>
+        <name>CA_ID</name>
+        <rename>CA_ID</rename>
+        <type>String</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+      <meta>
+        <name>C_ID</name>
+        <rename>C_ID</rename>
+        <type>String</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
         <date_format_lenient>false</date_format_lenient>
         <date_format_locale/>
         <date_format_timezone/>
@@ -2500,8 +1912,8 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>448</xloc>
-      <yloc>240</yloc>
+      <xloc>176</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2562,8 +1974,8 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1584</xloc>
-      <yloc>240</yloc>
+      <xloc>736</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2597,6 +2009,40 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
         <currency_symbol/>
         <storage_type/>
       </meta>
+      <meta>
+        <name>CA_ID</name>
+        <rename>CA_ID</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+      <meta>
+        <name>C_ID</name>
+        <rename>C_ID</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -2607,8 +2053,8 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1296</xloc>
-      <yloc>240</yloc>
+      <xloc>784</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2632,7 +2078,7 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
     <unique_rows>N</unique_rows>
     <fields>
       <field>
-        <name>tx_id_n</name>
+        <name>brokerid</name>
         <ascending>Y</ascending>
         <case_sensitive>N</case_sensitive>
         <collator_enabled>N</collator_enabled>
@@ -2649,8 +2095,8 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>624</xloc>
-      <yloc>160</yloc>
+      <xloc>960</xloc>
+      <yloc>304</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2658,183 +2104,7 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
     <name>Sort rows 2</name>
     <type>SortRows</type>
     <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>C_NAT_TX_ID</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>528</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 3</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>tx_id_l</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>784</xloc>
-      <yloc>160</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 4</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>C_LCL_TX_ID</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>704</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 5</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>C_ID</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-      <field>
-        <name>ActionDate</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1088</xloc>
-      <yloc>240</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 6</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution/>
     <copies>1</copies>
     <partitioning>
@@ -2867,13 +2137,13 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>944</xloc>
-      <yloc>96</yloc>
+      <xloc>496</xloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Sort rows 7</name>
+    <name>Sort rows 2 2</name>
     <type>SortRows</type>
     <description/>
     <distribute>Y</distribute>
@@ -2909,14 +2179,14 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>864</xloc>
-      <yloc>240</yloc>
+      <xloc>544</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>TaxRate</name>
-    <type>TableInput</type>
+    <name>Sort rows 3</name>
+    <type>SortRows</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -2925,13 +2195,23 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>DW</connection>
-    <sql>select * from TaxRate</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>CA_B_ID</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -2941,13 +2221,63 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>480</xloc>
-      <yloc>32</yloc>
+      <xloc>832</xloc>
+      <yloc>256</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>UPDCUST OR INACT</name>
+    <name>Sort rows 5</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>CA_ID</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <name>ActionDate</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>608</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>UPDACCT OR CLOSEACCT</name>
     <type>FilterRows</type>
     <description/>
     <distribute>Y</distribute>
@@ -2957,7 +2287,7 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <send_true_to>DimCustomer 2</send_true_to>
+    <send_true_to>DimAccount</send_true_to>
     <send_false_to>Add systemic fields 2</send_false_to>
     <compare>
       <condition>
@@ -2968,7 +2298,7 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
         <value>
           <name>constant</name>
           <type>String</type>
-          <text>UPDCUST</text>
+          <text>UPDACCT</text>
           <length>-1</length>
           <precision>-1</precision>
           <isnull>N</isnull>
@@ -2985,14 +2315,14 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1808</xloc>
-      <yloc>336</yloc>
+      <xloc>1040</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Update DimAccount</name>
-    <type>ExecSQL</type>
+    <name>Update or Close Account</name>
+    <type>FilterRows</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -3001,27 +2331,46 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>DW</connection>
-    <execute_each_row>Y</execute_each_row>
-    <single_statement>Y</single_statement>
-    <replace_variables>N</replace_variables>
-    <quoteString>N</quoteString>
-    <sql>UPDATE DimAccount
-SET SK_CustomerId = ?
-WHERE SK_CustomerId = ?</sql>
-    <set_params>Y</set_params>
-    <insert_field/>
-    <update_field/>
-    <delete_field/>
-    <read_field/>
-    <arguments>
-      <argument>
-        <name>SK_CustomerID</name>
-      </argument>
-      <argument>
-        <name>old_sk_customerid</name>
-      </argument>
-    </arguments>
+    <send_true_to>Sort rows 5</send_true_to>
+    <send_false_to>Filter rows 2</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <conditions>
+          <condition>
+            <negated>N</negated>
+            <leftvalue>ActionType</leftvalue>
+            <function>=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>String</type>
+              <text>UPDACCT</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask/>
+            </value>
+          </condition>
+          <condition>
+            <negated>N</negated>
+            <operator>OR</operator>
+            <leftvalue>ActionType</leftvalue>
+            <function>=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>String</type>
+              <text>CLOSEACCT</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask/>
+            </value>
+          </condition>
+        </conditions>
+      </condition>
+    </compare>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -3031,14 +2380,14 @@ WHERE SK_CustomerId = ?</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1952</xloc>
-      <yloc>160</yloc>
+      <xloc>304</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Update DimAccount 2</name>
-    <type>ExecSQL</type>
+    <name>DimAccount 3</name>
+    <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -3048,55 +2397,13 @@ WHERE SK_CustomerId = ?</sql>
       <schema_name/>
     </partitioning>
     <connection>DW</connection>
-    <execute_each_row>Y</execute_each_row>
-    <single_statement>Y</single_statement>
-    <replace_variables>N</replace_variables>
-    <quoteString>N</quoteString>
-    <sql>WITH max_srgt (var1) as (
-   select max(SK_AccountId) from dimaccount
-),
-updated as
-(
-	UPDATE DimAccount
-	SET EndDate = ?,
-	IsCurrent = 'False'
-	--,Status = 'INACTIVE'
-	WHERE SK_CustomerId = ?
-	RETURNING *
-)
-insert into dimaccount
-select 
-CAST(var1  AS INTEGER) + CAST(ROW_NUMBER() OVER (ORDER BY AccountID) AS INTEGER),  
-AccountID  ,
-SK_BrokerID  ,
-?  ,
-'INACTIVE'  ,     
-AccountDesc,      
-TaxStatus ,
-'True' ,
-BatchID ,
-?,
-'9999-12-31' 
-from updated,max_srgt</sql>
-    <set_params>Y</set_params>
-    <insert_field/>
-    <update_field/>
-    <delete_field/>
-    <read_field/>
-    <arguments>
-      <argument>
-        <name>ActionDate</name>
-      </argument>
-      <argument>
-        <name>old_sk_customerid</name>
-      </argument>
-      <argument>
-        <name>SK_CustomerID</name>
-      </argument>
-      <argument>
-        <name>ActionDate</name>
-      </argument>
-    </arguments>
+    <sql>SELECT AccountId as CA_ID, Sk_CustomerId  FROM DimAccount
+</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -3106,8 +2413,519 @@ from updated,max_srgt</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1968</xloc>
-      <yloc>672</yloc>
+      <xloc>416</xloc>
+      <yloc>352</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows 6</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>sk_customerid</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>416</xloc>
+      <yloc>272</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows 7</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>sk_customerid</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>256</xloc>
+      <yloc>272</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Merge join 2</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <join_type>INNER</join_type>
+    <step1>Sort rows 7</step1>
+    <step2>Sort rows 6</step2>
+    <keys_1>
+      <key>sk_customerid</key>
+    </keys_1>
+    <keys_2>
+      <key>sk_customerid</key>
+    </keys_2>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>336</xloc>
+      <yloc>320</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Produce Fields</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>var Status = 'ACTIVE'
+
+var ActionDate = ActionTS.substr(0,10)</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>Status</name>
+        <rename>Status</rename>
+        <type>String</type>
+        <length>6</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>ActionDate</name>
+        <rename>ActionDate</rename>
+        <type>String</type>
+        <length>10</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>96</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Filter rows 2</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <send_true_to>Select values 4</send_true_to>
+    <send_false_to/>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <conditions>
+          <condition>
+            <negated>N</negated>
+            <leftvalue>ActionType</leftvalue>
+            <function>=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>String</type>
+              <text>UPDCUST</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask/>
+            </value>
+          </condition>
+          <condition>
+            <negated>N</negated>
+            <operator>OR</operator>
+            <leftvalue>ActionType</leftvalue>
+            <function>=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>String</type>
+              <text>INACT</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask/>
+            </value>
+          </condition>
+        </conditions>
+      </condition>
+    </compare>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>176</xloc>
+      <yloc>272</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows 4</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>C_ID</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>176</xloc>
+      <yloc>416</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Merge join 4</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <join_type>INNER</join_type>
+    <step1>Sort rows 4</step1>
+    <step2>Sort rows 2</step2>
+    <keys_1>
+      <key>C_ID</key>
+    </keys_1>
+    <keys_2>
+      <key>customerid</key>
+    </keys_2>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>256</xloc>
+      <yloc>416</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 5</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>ActionDate</name>
+        <rename/>
+      </field>
+      <field>
+        <name>ActionType</name>
+        <rename/>
+      </field>
+      <field>
+        <name>CA_B_ID</name>
+        <rename/>
+      </field>
+      <field>
+        <name>ca_id</name>
+        <rename>CA_ID</rename>
+      </field>
+      <field>
+        <name>CA_NAME</name>
+        <rename/>
+      </field>
+      <field>
+        <name>CA_TAX_ST</name>
+        <rename/>
+      </field>
+      <field>
+        <name>C_ID</name>
+        <rename/>
+      </field>
+      <field>
+        <name>Status</name>
+        <rename/>
+      </field>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>ca_id</name>
+        <rename>ca_id</rename>
+        <type>String</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+      <meta>
+        <name>C_ID</name>
+        <rename>C_ID</rename>
+        <type>String</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>336</xloc>
+      <yloc>256</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 6</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>ActionTS</name>
+        <rename/>
+      </field>
+      <field>
+        <name>ActionType</name>
+        <rename/>
+      </field>
+      <field>
+        <name>CA_B_ID</name>
+        <rename/>
+      </field>
+      <field>
+        <name>CA_ID</name>
+        <rename/>
+      </field>
+      <field>
+        <name>CA_NAME</name>
+        <rename/>
+      </field>
+      <field>
+        <name>CA_TAX_ST</name>
+        <rename/>
+      </field>
+      <field>
+        <name>C_ID</name>
+        <rename/>
+      </field>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>CA_ID</name>
+        <rename>CA_ID</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>16</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 4</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+      <remove>
+        <name>CA_ID</name>
+      </remove>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>176</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
