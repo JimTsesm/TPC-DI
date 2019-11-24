@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
-  <name>loadDimcustomer</name>
+  <name>loadDimcustomer_DimAccount</name>
   <description/>
   <extended_description/>
   <job_version/>
@@ -357,7 +357,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>48</xloc>
-      <yloc>208</yloc>
+      <yloc>80</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -394,8 +394,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1184</xloc>
-      <yloc>208</yloc>
+      <xloc>960</xloc>
+      <yloc>80</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -406,8 +406,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1440</xloc>
-      <yloc>336</yloc>
+      <xloc>1200</xloc>
+      <yloc>208</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -444,8 +444,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1184</xloc>
-      <yloc>32</yloc>
+      <xloc>560</xloc>
+      <yloc>80</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -482,8 +482,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>352</xloc>
-      <yloc>208</yloc>
+      <xloc>400</xloc>
+      <yloc>80</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -520,8 +520,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1184</xloc>
-      <yloc>112</yloc>
+      <xloc>736</xloc>
+      <yloc>80</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -618,8 +618,8 @@ where new_cust.sk_customerid = old_cust.sk_customerid
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>912</xloc>
-      <yloc>336</yloc>
+      <xloc>608</xloc>
+      <yloc>320</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -644,8 +644,8 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1104</xloc>
-      <yloc>336</yloc>
+      <xloc>864</xloc>
+      <yloc>320</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -682,8 +682,8 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1280</xloc>
-      <yloc>336</yloc>
+      <xloc>1088</xloc>
+      <yloc>320</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -704,8 +704,8 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>112</xloc>
-      <yloc>320</yloc>
+      <xloc>160</xloc>
+      <yloc>80</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -742,8 +742,8 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>256</xloc>
-      <yloc>320</yloc>
+      <xloc>272</xloc>
+      <yloc>80</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -780,8 +780,8 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>512</xloc>
-      <yloc>208</yloc>
+      <xloc>960</xloc>
+      <yloc>192</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -818,8 +818,8 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>672</xloc>
-      <yloc>208</yloc>
+      <xloc>784</xloc>
+      <yloc>192</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -856,8 +856,8 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>864</xloc>
-      <yloc>208</yloc>
+      <xloc>576</xloc>
+      <yloc>192</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -908,8 +908,8 @@ where new_acc.SK_AccountID = old_acc.SK_AccountID</sql>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>720</xloc>
-      <yloc>336</yloc>
+      <xloc>384</xloc>
+      <yloc>192</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -929,8 +929,8 @@ ALTER TABLE dimaccount ALTER COLUMN SK_BrokerID  SET NOT NULL;
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>556</xloc>
-      <yloc>485</yloc>
+      <xloc>384</xloc>
+      <yloc>320</yloc>
       <attributes_kjc/>
     </entry>
   </entries>
@@ -990,15 +990,6 @@ ALTER TABLE dimaccount ALTER COLUMN SK_BrokerID  SET NOT NULL;
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>DimCustomer - Initial load</from>
-      <to>DimAccount- Initial load</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
       <from>Close old records</from>
       <to>Find the max DimCustomer SRGT</to>
       <from_nr>0</from_nr>
@@ -1044,15 +1035,6 @@ ALTER TABLE dimaccount ALTER COLUMN SK_BrokerID  SET NOT NULL;
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Historical Update DimCustomer</from>
-      <to>Historical Update DimAccount</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>N</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
       <from>Set specific columns to NOT NULL 2</from>
       <to>Recursively update DimCustomer</to>
       <from_nr>0</from_nr>
@@ -1062,8 +1044,26 @@ ALTER TABLE dimaccount ALTER COLUMN SK_BrokerID  SET NOT NULL;
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Find the max DimAccount SRGT</from>
+      <from>DimCustomer - Initial load</from>
       <to>Close old records</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Historical Update DimCustomer</from>
+      <to>DimAccount- Initial load</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Find the max DimAccount SRGT</from>
+      <to>Historical Update DimAccount</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>

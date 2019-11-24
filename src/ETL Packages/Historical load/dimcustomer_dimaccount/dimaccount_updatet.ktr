@@ -505,7 +505,7 @@
     <hop>
       <from>Add sequence</from>
       <to>UPDACCT OR CLOSEACCT</to>
-      <enabled>N</enabled>
+      <enabled>Y</enabled>
     </hop>
     <hop>
       <from>UPDACCT OR CLOSEACCT</from>
@@ -523,18 +523,8 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join 3</from>
-      <to>Sort rows 2 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Sort rows 3</from>
       <to>Merge join 3</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Close old records</from>
-      <to>Sort rows 3</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -603,11 +593,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join</from>
-      <to>Produce Effective and End Dates</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Produce Fields</from>
       <to>Select values</to>
       <enabled>Y</enabled>
@@ -672,6 +657,26 @@
       <to>Sort rows 5</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Merge join</from>
+      <to>Filter rows 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filter rows 3</from>
+      <to>Produce Effective and End Dates</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Close old records</from>
+      <to>Sort rows 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Merge join 3</from>
+      <to>Sort rows 2 2</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
   <step>
     <name>Add sequence</name>
@@ -690,8 +695,8 @@
     <schema/>
     <seqname>SEQ_</seqname>
     <use_counter>Y</use_counter>
-    <counter_name>${maxDimaccountSrgt}</counter_name>
-    <start_at>1</start_at>
+    <counter_name/>
+    <start_at>${maxDimaccountSrgt}</start_at>
     <increment_by>1</increment_by>
     <max_value>999999999</max_value>
     <attributes/>
@@ -703,8 +708,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>912</xloc>
-      <yloc>416</yloc>
+      <xloc>1520</xloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -742,8 +747,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>816</xloc>
-      <yloc>416</yloc>
+      <xloc>1424</xloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -781,8 +786,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1040</xloc>
-      <yloc>512</yloc>
+      <xloc>1648</xloc>
+      <yloc>608</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -825,7 +830,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>704</xloc>
+      <xloc>880</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1313,7 +1318,7 @@ AND ? = 1</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1040</xloc>
+      <xloc>1216</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1360,10 +1365,6 @@ AND ? = 1</sql>
         <stream_name>CA_TAX_ST</stream_name>
       </field>
       <field>
-        <column_name>status</column_name>
-        <stream_name>Status</stream_name>
-      </field>
-      <field>
         <column_name>iscurrent</column_name>
         <stream_name>IsCurrent_NEW</stream_name>
       </field>
@@ -1401,8 +1402,8 @@ AND ? = 1</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1200</xloc>
-      <yloc>416</yloc>
+      <xloc>1808</xloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1489,8 +1490,41 @@ AND ? = 1</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1200</xloc>
-      <yloc>512</yloc>
+      <xloc>1808</xloc>
+      <yloc>608</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>DimAccount 3</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>DW</connection>
+    <sql>SELECT AccountId as CA_ID, Sk_CustomerId  FROM DimAccount
+</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>528</xloc>
+      <yloc>304</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1522,8 +1556,8 @@ FROM DimBroker</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1104</xloc>
-      <yloc>304</yloc>
+      <xloc>1344</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1539,10 +1573,17 @@ FROM DimBroker</sql>
       <schema_name/>
     </partitioning>
     <connection>DW</connection>
-    <sql>SELECT SK_CustomerID, CustomerID
+    <sql>with min_cst_srgt as(
+select customerid, min(sk_customerid) as min_sk_id from dimcustomer
+group by customerid
+)
+select SK_CustomerID, a.CustomerID
 , EffectiveDate as CST_EffectiveDate
 , EndDate as CST_EndDate
-FROM DimCustomer</sql>
+,b.min_sk_id as min_sk_id
+from dimcustomer a
+inner join min_cst_srgt b on a.customerid = b.customerid
+</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
@@ -1557,7 +1598,7 @@ FROM DimCustomer</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>496</xloc>
+      <xloc>672</xloc>
       <yloc>592</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1604,8 +1645,73 @@ FROM DimCustomer</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>256</xloc>
-      <yloc>352</yloc>
+      <xloc>304</xloc>
+      <yloc>384</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Filter rows 2</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <send_true_to>Select values 4</send_true_to>
+    <send_false_to/>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <conditions>
+          <condition>
+            <negated>N</negated>
+            <leftvalue>ActionType</leftvalue>
+            <function>=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>String</type>
+              <text>UPDCUST</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask/>
+            </value>
+          </condition>
+          <condition>
+            <negated>N</negated>
+            <operator>OR</operator>
+            <leftvalue>ActionType</leftvalue>
+            <function>=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>String</type>
+              <text>INACT</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask/>
+            </value>
+          </condition>
+        </conditions>
+      </condition>
+    </compare>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1638,8 +1744,42 @@ FROM DimCustomer</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>496</xloc>
-      <yloc>416</yloc>
+      <xloc>928</xloc>
+      <yloc>512</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Merge join 2</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <join_type>INNER</join_type>
+    <step1>Sort rows 7</step1>
+    <step2>Sort rows 6</step2>
+    <keys_1>
+      <key>min_sk_id</key>
+    </keys_1>
+    <keys_2>
+      <key>sk_customerid</key>
+    </keys_2>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>416</xloc>
+      <yloc>400</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1672,8 +1812,42 @@ FROM DimCustomer</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>704</xloc>
-      <yloc>320</yloc>
+      <xloc>1088</xloc>
+      <yloc>416</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Merge join 4</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <join_type>INNER</join_type>
+    <step1>Sort rows 4</step1>
+    <step2>Sort rows 2</step2>
+    <keys_1>
+      <key>C_ID</key>
+    </keys_1>
+    <keys_2>
+      <key>customerid</key>
+    </keys_2>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>304</xloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1720,7 +1894,7 @@ else IsFirstRow = 0
       </output>
     </remotesteps>
     <GUI>
-      <xloc>896</xloc>
+      <xloc>1072</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1784,8 +1958,62 @@ else
       </output>
     </remotesteps>
     <GUI>
-      <xloc>624</xloc>
-      <yloc>416</yloc>
+      <xloc>1168</xloc>
+      <yloc>512</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Produce Fields</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>var Status = 'ACTIVE'
+
+var ActionDate = ActionTS.substr(0,10)</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>Status</name>
+        <rename>Status</rename>
+        <type>String</type>
+        <length>6</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>ActionDate</name>
+        <rename>ActionDate</rename>
+        <type>String</type>
+        <length>10</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>96</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1803,35 +2031,27 @@ else
     <fields>
       <field>
         <name>ActionDate</name>
-        <rename/>
       </field>
       <field>
         <name>ActionType</name>
-        <rename/>
       </field>
       <field>
         <name>CA_B_ID</name>
-        <rename/>
       </field>
       <field>
         <name>CA_ID</name>
-        <rename/>
       </field>
       <field>
         <name>CA_NAME</name>
-        <rename/>
       </field>
       <field>
         <name>CA_TAX_ST</name>
-        <rename/>
       </field>
       <field>
         <name>C_ID</name>
-        <rename/>
       </field>
       <field>
         <name>Status</name>
-        <rename/>
       </field>
       <select_unspecified>N</select_unspecified>
       <meta>
@@ -1974,8 +2194,8 @@ else
       </output>
     </remotesteps>
     <GUI>
-      <xloc>736</xloc>
-      <yloc>416</yloc>
+      <xloc>1312</xloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2053,7 +2273,191 @@ else
       </output>
     </remotesteps>
     <GUI>
-      <xloc>784</xloc>
+      <xloc>960</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 4</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+      <remove>
+        <name>CA_ID</name>
+      </remove>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>416</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 5</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>ActionDate</name>
+      </field>
+      <field>
+        <name>ActionType</name>
+      </field>
+      <field>
+        <name>CA_B_ID</name>
+      </field>
+      <field>
+        <name>ca_id</name>
+        <rename>CA_ID</rename>
+      </field>
+      <field>
+        <name>CA_NAME</name>
+      </field>
+      <field>
+        <name>CA_TAX_ST</name>
+      </field>
+      <field>
+        <name>C_ID</name>
+      </field>
+      <field>
+        <name>Status</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>ca_id</name>
+        <rename>ca_id</rename>
+        <type>String</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+      <meta>
+        <name>C_ID</name>
+        <rename>C_ID</rename>
+        <type>String</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>416</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 6</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>ActionTS</name>
+      </field>
+      <field>
+        <name>ActionType</name>
+      </field>
+      <field>
+        <name>CA_B_ID</name>
+      </field>
+      <field>
+        <name>CA_ID</name>
+      </field>
+      <field>
+        <name>CA_NAME</name>
+      </field>
+      <field>
+        <name>CA_TAX_ST</name>
+      </field>
+      <field>
+        <name>C_ID</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>CA_ID</name>
+        <rename>CA_ID</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>16</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -2095,8 +2499,8 @@ else
       </output>
     </remotesteps>
     <GUI>
-      <xloc>960</xloc>
-      <yloc>304</yloc>
+      <xloc>1344</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2137,7 +2541,7 @@ else
       </output>
     </remotesteps>
     <GUI>
-      <xloc>496</xloc>
+      <xloc>672</xloc>
       <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
@@ -2179,8 +2583,8 @@ else
       </output>
     </remotesteps>
     <GUI>
-      <xloc>544</xloc>
-      <yloc>320</yloc>
+      <xloc>928</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2221,8 +2625,50 @@ else
       </output>
     </remotesteps>
     <GUI>
-      <xloc>832</xloc>
-      <yloc>256</yloc>
+      <xloc>1216</xloc>
+      <yloc>288</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows 4</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>C_ID</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2271,8 +2717,92 @@ else
       </output>
     </remotesteps>
     <GUI>
-      <xloc>608</xloc>
+      <xloc>784</xloc>
       <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows 6</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>sk_customerid</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>528</xloc>
+      <yloc>400</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows 7</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>min_sk_id</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>304</xloc>
+      <yloc>304</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2292,18 +2822,39 @@ else
     <compare>
       <condition>
         <negated>N</negated>
-        <leftvalue>ActionType</leftvalue>
-        <function>=</function>
-        <rightvalue/>
-        <value>
-          <name>constant</name>
-          <type>String</type>
-          <text>UPDACCT</text>
-          <length>-1</length>
-          <precision>-1</precision>
-          <isnull>N</isnull>
-          <mask/>
-        </value>
+        <conditions>
+          <condition>
+            <negated>N</negated>
+            <leftvalue>ActionType</leftvalue>
+            <function>=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>String</type>
+              <text>UPDACCT</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask/>
+            </value>
+          </condition>
+          <condition>
+            <negated>N</negated>
+            <operator>OR</operator>
+            <leftvalue>ActionType</leftvalue>
+            <function>=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>String</type>
+              <text>UPDCUST</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask/>
+            </value>
+          </condition>
+        </conditions>
       </condition>
     </compare>
     <attributes/>
@@ -2315,8 +2866,8 @@ else
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1040</xloc>
-      <yloc>416</yloc>
+      <xloc>1648</xloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2380,218 +2931,13 @@ else
       </output>
     </remotesteps>
     <GUI>
-      <xloc>304</xloc>
+      <xloc>288</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>DimAccount 3</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>DW</connection>
-    <sql>SELECT AccountId as CA_ID, Sk_CustomerId  FROM DimAccount
-</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>416</xloc>
-      <yloc>352</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 6</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>sk_customerid</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>416</xloc>
-      <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 7</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>sk_customerid</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>256</xloc>
-      <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Merge join 2</name>
-    <type>MergeJoin</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <join_type>INNER</join_type>
-    <step1>Sort rows 7</step1>
-    <step2>Sort rows 6</step2>
-    <keys_1>
-      <key>sk_customerid</key>
-    </keys_1>
-    <keys_2>
-      <key>sk_customerid</key>
-    </keys_2>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>336</xloc>
-      <yloc>320</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Produce Fields</name>
-    <type>ScriptValueMod</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <compatible>N</compatible>
-    <optimizationLevel>9</optimizationLevel>
-    <jsScripts>
-      <jsScript>
-        <jsScript_type>0</jsScript_type>
-        <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>var Status = 'ACTIVE'
-
-var ActionDate = ActionTS.substr(0,10)</jsScript_script>
-      </jsScript>
-    </jsScripts>
-    <fields>
-      <field>
-        <name>Status</name>
-        <rename>Status</rename>
-        <type>String</type>
-        <length>6</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>ActionDate</name>
-        <rename>ActionDate</rename>
-        <type>String</type>
-        <length>10</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>96</xloc>
-      <yloc>176</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Filter rows 2</name>
+    <name>Filter rows 3</name>
     <type>FilterRows</type>
     <description/>
     <distribute>Y</distribute>
@@ -2601,7 +2947,7 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <send_true_to>Select values 4</send_true_to>
+    <send_true_to>Produce Effective and End Dates</send_true_to>
     <send_false_to/>
     <compare>
       <condition>
@@ -2609,34 +2955,16 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
         <conditions>
           <condition>
             <negated>N</negated>
-            <leftvalue>ActionType</leftvalue>
-            <function>=</function>
-            <rightvalue/>
-            <value>
-              <name>constant</name>
-              <type>String</type>
-              <text>UPDCUST</text>
-              <length>-1</length>
-              <precision>-1</precision>
-              <isnull>N</isnull>
-              <mask/>
-            </value>
+            <leftvalue>ActionDate</leftvalue>
+            <function>&gt;=</function>
+            <rightvalue>cst_effectivedate</rightvalue>
           </condition>
           <condition>
             <negated>N</negated>
-            <operator>OR</operator>
-            <leftvalue>ActionType</leftvalue>
-            <function>=</function>
-            <rightvalue/>
-            <value>
-              <name>constant</name>
-              <type>String</type>
-              <text>INACT</text>
-              <length>-1</length>
-              <precision>-1</precision>
-              <isnull>N</isnull>
-              <mask/>
-            </value>
+            <operator>AND</operator>
+            <leftvalue>ActionDate</leftvalue>
+            <function>&lt;</function>
+            <rightvalue>cst_enddate</rightvalue>
           </condition>
         </conditions>
       </condition>
@@ -2650,282 +2978,8 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>176</xloc>
-      <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 4</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>C_ID</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>176</xloc>
-      <yloc>416</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Merge join 4</name>
-    <type>MergeJoin</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <join_type>INNER</join_type>
-    <step1>Sort rows 4</step1>
-    <step2>Sort rows 2</step2>
-    <keys_1>
-      <key>C_ID</key>
-    </keys_1>
-    <keys_2>
-      <key>customerid</key>
-    </keys_2>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>256</xloc>
-      <yloc>416</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values 5</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>ActionDate</name>
-        <rename/>
-      </field>
-      <field>
-        <name>ActionType</name>
-        <rename/>
-      </field>
-      <field>
-        <name>CA_B_ID</name>
-        <rename/>
-      </field>
-      <field>
-        <name>ca_id</name>
-        <rename>CA_ID</rename>
-      </field>
-      <field>
-        <name>CA_NAME</name>
-        <rename/>
-      </field>
-      <field>
-        <name>CA_TAX_ST</name>
-        <rename/>
-      </field>
-      <field>
-        <name>C_ID</name>
-        <rename/>
-      </field>
-      <field>
-        <name>Status</name>
-        <rename/>
-      </field>
-      <select_unspecified>N</select_unspecified>
-      <meta>
-        <name>ca_id</name>
-        <rename>ca_id</rename>
-        <type>String</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>
-      <meta>
-        <name>C_ID</name>
-        <rename>C_ID</rename>
-        <type>String</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>336</xloc>
-      <yloc>256</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values 6</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>ActionTS</name>
-        <rename/>
-      </field>
-      <field>
-        <name>ActionType</name>
-        <rename/>
-      </field>
-      <field>
-        <name>CA_B_ID</name>
-        <rename/>
-      </field>
-      <field>
-        <name>CA_ID</name>
-        <rename/>
-      </field>
-      <field>
-        <name>CA_NAME</name>
-        <rename/>
-      </field>
-      <field>
-        <name>CA_TAX_ST</name>
-        <rename/>
-      </field>
-      <field>
-        <name>C_ID</name>
-        <rename/>
-      </field>
-      <select_unspecified>N</select_unspecified>
-      <meta>
-        <name>CA_ID</name>
-        <rename>CA_ID</rename>
-        <type>Integer</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <date_format_lenient>false</date_format_lenient>
-        <date_format_locale/>
-        <date_format_timezone/>
-        <lenient_string_to_number>false</lenient_string_to_number>
-        <encoding/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>16</xloc>
-      <yloc>176</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values 4</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-      <remove>
-        <name>CA_ID</name>
-      </remove>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>176</xloc>
-      <yloc>352</yloc>
+      <xloc>1024</xloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
