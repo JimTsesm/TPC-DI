@@ -489,11 +489,6 @@
   </connection>
   <order>
     <hop>
-      <from>FINWARE</from>
-      <to>only CMP rows</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>industry.txt</from>
       <to>Sort rows 2</to>
       <enabled>Y</enabled>
@@ -529,26 +524,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Current image of DimCompany</from>
-      <to>Sort rows 4</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Insert / update</from>
-      <to>DimCompany 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add constants</from>
-      <to>Insert / update</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>New or existing records</from>
-      <to>Add constants</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>only CMP rows</from>
       <to>Generate isLowGrade</to>
       <enabled>Y</enabled>
@@ -556,21 +531,6 @@
     <hop>
       <from>Select values</from>
       <to>Sort rows 6</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Sort rows 6</from>
-      <to>Merge join 3</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Sort rows 4</from>
-      <to>Merge join 3</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Merge join 3</from>
-      <to>Sort rows</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -584,60 +544,46 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Add systemic fields</from>
-      <to>Add sequence</to>
+      <from>Sort rows 6</from>
+      <to>Analytic query</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Add sequence</from>
-      <to>New or existing records</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>New or existing records</from>
       <to>DimCompany</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>FINWARE</from>
+      <to>only CMP rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Analytic query</from>
+      <to>Select values 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values 2</from>
+      <to>Produce Effective and End Dates</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Produce Effective and End Dates</from>
+      <to>Sort rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add systemic fields</from>
+      <to>cast</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>cast</from>
+      <to>Add sequence</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
-  <step>
-    <name>Add constants</name>
-    <type>Constant</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>IsCurrent_new</name>
-        <type>Boolean</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif>False</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1360</xloc>
-      <yloc>384</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
   <step>
     <name>Add sequence</name>
     <type>Sequence</type>
@@ -686,30 +632,6 @@
     </partitioning>
     <fields>
       <field>
-        <name>EndDate</name>
-        <type>Date</type>
-        <format>yyyy-MM-dd</format>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif>9999-12-31</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-      <field>
-        <name>IsCurrent</name>
-        <type>Boolean</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif>True</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-      <field>
         <name>BatchID</name>
         <type>Integer</type>
         <format/>
@@ -737,8 +659,8 @@
     </GUI>
   </step>
   <step>
-    <name>Current image of DimCompany</name>
-    <type>TableInput</type>
+    <name>Analytic query</name>
+    <type>AnalyticQuery</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -747,16 +669,19 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>DW</connection>
-    <sql>SELECT CompanyID AS CompanyID_Current
-, effectivedate as  effectivedate_Current
-FROM DimCompany
-where iscurrent = true</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
+    <group>
+      <field>
+        <name>CIK</name>
+      </field>
+    </group>
+    <fields>
+      <field>
+        <aggregate>PTS_NEXT</aggregate>
+        <subject>PTS</subject>
+        <type>LEAD</type>
+        <valuefield>1</valuefield>
+      </field>
+    </fields>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -766,8 +691,8 @@ where iscurrent = true</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>480</xloc>
-      <yloc>320</yloc>
+      <xloc>560</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -838,7 +763,7 @@ where iscurrent = true</sql>
       </field>
       <field>
         <column_name>EndDate</column_name>
-        <stream_name>EndDate</stream_name>
+        <stream_name>EndDate_NEW</stream_name>
       </field>
       <field>
         <column_name>FoundingDate</column_name>
@@ -850,7 +775,7 @@ where iscurrent = true</sql>
       </field>
       <field>
         <column_name>IsCurrent</column_name>
-        <stream_name>IsCurrent</stream_name>
+        <stream_name>IsCurrent_NEW</stream_name>
       </field>
       <field>
         <column_name>PostalCode</column_name>
@@ -891,131 +816,7 @@ where iscurrent = true</sql>
     </remotesteps>
     <GUI>
       <xloc>1472</xloc>
-      <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>DimCompany 2</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>DW</connection>
-    <schema/>
-    <table>dimcompany</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>addressline1</column_name>
-        <stream_name>AddrLine1</stream_name>
-      </field>
-      <field>
-        <column_name>addressline2</column_name>
-        <stream_name>AddrLine2</stream_name>
-      </field>
-      <field>
-        <column_name>BatchID</column_name>
-        <stream_name>BatchID</stream_name>
-      </field>
-      <field>
-        <column_name>ceo</column_name>
-        <stream_name>CEOname</stream_name>
-      </field>
-      <field>
-        <column_name>companyid</column_name>
-        <stream_name>CIK</stream_name>
-      </field>
-      <field>
-        <column_name>City</column_name>
-        <stream_name>City</stream_name>
-      </field>
-      <field>
-        <column_name>name</column_name>
-        <stream_name>CompanyName</stream_name>
-      </field>
-      <field>
-        <column_name>Country</column_name>
-        <stream_name>Country</stream_name>
-      </field>
-      <field>
-        <column_name>Description</column_name>
-        <stream_name>Description</stream_name>
-      </field>
-      <field>
-        <column_name>EndDate</column_name>
-        <stream_name>EndDate</stream_name>
-      </field>
-      <field>
-        <column_name>FoundingDate</column_name>
-        <stream_name>FoundingDate</stream_name>
-      </field>
-      <field>
-        <column_name>industry</column_name>
-        <stream_name>IN_NAME</stream_name>
-      </field>
-      <field>
-        <column_name>IsCurrent</column_name>
-        <stream_name>IsCurrent</stream_name>
-      </field>
-      <field>
-        <column_name>PostalCode</column_name>
-        <stream_name>PostalCode</stream_name>
-      </field>
-      <field>
-        <column_name>sprating</column_name>
-        <stream_name>SPrating</stream_name>
-      </field>
-      <field>
-        <column_name>status</column_name>
-        <stream_name>ST_NAME</stream_name>
-      </field>
-      <field>
-        <column_name>stateprov</column_name>
-        <stream_name>StateProvince</stream_name>
-      </field>
-      <field>
-        <column_name>sk_companyid</column_name>
-        <stream_name>SK_CompanyID</stream_name>
-      </field>
-      <field>
-        <column_name>effectivedate</column_name>
-        <stream_name>PTS</stream_name>
-      </field>
-      <field>
-        <column_name>islowgrade</column_name>
-        <stream_name>isLowGrade</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1536</xloc>
-      <yloc>384</yloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1058,7 +859,7 @@ where iscurrent = true</sql>
     <length>Characters</length>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>C:\Users\Alex\Desktop\Jim Profile\Studies\BDMA\Courses\Data warehouses\TPC-DI\produced_dataset\produced_dataset\Batch1\FINWIRE1968Q1</name>
+      <name>C:\Users\Alex\Desktop\FINTRY.TXT</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>
@@ -1396,60 +1197,6 @@ else isLowGrade = 'False'</jsScript_script>
     </GUI>
   </step>
   <step>
-    <name>Insert / update</name>
-    <type>InsertUpdate</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>DW</connection>
-    <commit>100</commit>
-    <update_bypassed>N</update_bypassed>
-    <lookup>
-      <schema/>
-      <table>dimcompany</table>
-      <key>
-        <name>CIK</name>
-        <field>companyid</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <key>
-        <name>IsCurrent</name>
-        <field>iscurrent</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>enddate</name>
-        <rename>PTS</rename>
-        <update>Y</update>
-      </value>
-      <value>
-        <name>iscurrent</name>
-        <rename>IsCurrent_new</rename>
-        <update>Y</update>
-      </value>
-    </lookup>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1456</xloc>
-      <yloc>384</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>Merge join</name>
     <type>MergeJoin</type>
     <description/>
@@ -1478,7 +1225,7 @@ else isLowGrade = 'False'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>912</xloc>
+      <xloc>960</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1512,14 +1259,14 @@ else isLowGrade = 'False'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1072</xloc>
+      <xloc>1120</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Merge join 3</name>
-    <type>MergeJoin</type>
+    <name>Produce Effective and End Dates</name>
+    <type>ScriptValueMod</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1528,15 +1275,45 @@ else isLowGrade = 'False'</jsScript_script>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <join_type>LEFT OUTER</join_type>
-    <step1>Sort rows 6</step1>
-    <step2>Sort rows 4</step2>
-    <keys_1>
-      <key>CIK</key>
-    </keys_1>
-    <keys_2>
-      <key>companyid_current</key>
-    </keys_2>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>var IsCurrent_NEW
+var EndDate_NEW
+if( PTS_NEXT == null) 
+{
+	EndDate_NEW = "9999-12-31"
+	IsCurrent_NEW = 'True'
+}
+else 
+{
+	EndDate_NEW = PTS_NEXT	
+	IsCurrent_NEW = 'False'
+}
+</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>IsCurrent_NEW</name>
+        <rename>IsCurrent_NEW</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>EndDate_NEW</name>
+        <rename>EndDate_NEW</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1546,43 +1323,8 @@ else isLowGrade = 'False'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>640</xloc>
+      <xloc>768</xloc>
       <yloc>176</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>New or existing records</name>
-    <type>FilterRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <send_true_to>DimCompany</send_true_to>
-    <send_false_to>Add constants</send_false_to>
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <leftvalue>effectivedate_current</leftvalue>
-        <function>IS NULL</function>
-        <rightvalue/>
-      </condition>
-    </compare>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1360</xloc>
-      <yloc>272</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1650,6 +1392,23 @@ else isLowGrade = 'False'</jsScript_script>
         <currency_symbol/>
         <storage_type/>
       </meta>
+      <meta>
+        <name>PTS</name>
+        <rename>PTS</rename>
+        <type>Date</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask>yyyy-MM-dd</conversion_mask>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -1661,6 +1420,51 @@ else isLowGrade = 'False'</jsScript_script>
     </remotesteps>
     <GUI>
       <xloc>368</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 2</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>PTS_NEXT</name>
+        <rename>PTS_NEXT</rename>
+        <type>String</type>
+        <length>10</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>640</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1702,7 +1506,7 @@ else isLowGrade = 'False'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>768</xloc>
+      <xloc>880</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1744,7 +1548,7 @@ else isLowGrade = 'False'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1072</xloc>
+      <xloc>1120</xloc>
       <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1786,50 +1590,8 @@ else isLowGrade = 'False'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>912</xloc>
+      <xloc>960</xloc>
       <yloc>112</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 4</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>companyid_current</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>640</xloc>
-      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1870,7 +1632,7 @@ else isLowGrade = 'False'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>992</xloc>
+      <xloc>1040</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1902,6 +1664,14 @@ else isLowGrade = 'False'</jsScript_script>
         <collator_strength>0</collator_strength>
         <presorted>N</presorted>
       </field>
+      <field>
+        <name>PTS</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -1914,6 +1684,68 @@ else isLowGrade = 'False'</jsScript_script>
     <GUI>
       <xloc>480</xloc>
       <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>cast</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>EndDate_NEW</name>
+        <rename>EndDate_NEW</rename>
+        <type>Date</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask>yyyy-MM-dd</conversion_mask>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+      <meta>
+        <name>IsCurrent_NEW</name>
+        <rename>IsCurrent_NEW</rename>
+        <type>Boolean</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1296</xloc>
+      <yloc>128</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2047,7 +1879,7 @@ else isLowGrade = 'False'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1072</xloc>
+      <xloc>1120</xloc>
       <yloc>16</yloc>
       <draw>Y</draw>
     </GUI>
@@ -2216,7 +2048,7 @@ else isLowGrade = 'False'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>912</xloc>
+      <xloc>960</xloc>
       <yloc>32</yloc>
       <draw>Y</draw>
     </GUI>
