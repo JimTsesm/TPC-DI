@@ -17,10 +17,10 @@
     <server>127.0.0.1</server>
     <type>POSTGRESQL</type>
     <access>Native</access>
-    <database>TPCDI</database>
+    <database>${cvar_database}</database>
     <port>5432</port>
     <username>postgres</username>
-    <password>Encrypted 2be98afc86aa7f29eaa0ab471cd88aec9</password>
+    <password>${cvar_password}</password>
     <servername/>
     <data_tablespace/>
     <index_tablespace/>
@@ -698,6 +698,16 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
         <field>
           <variable_name>files_path</variable_name>
           <variable_value>C:\Users\Alex\Desktop\Jim Profile\Studies\BDMA\Courses\Data warehouses\TPC-DI\produced_dataset\produced_dataset\Batch1</variable_value>
+          <variable_type>JVM</variable_type>
+        </field>
+        <field>
+          <variable_name>cvar_database</variable_name>
+          <variable_value>TPCDI</variable_value>
+          <variable_type>JVM</variable_type>
+        </field>
+        <field>
+          <variable_name>cvar_password</variable_name>
+          <variable_value>123</variable_value>
           <variable_type>JVM</variable_type>
         </field>
       </fields>

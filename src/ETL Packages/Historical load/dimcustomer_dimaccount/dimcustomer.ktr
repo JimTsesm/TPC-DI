@@ -440,10 +440,10 @@
     <server>127.0.0.1</server>
     <type>POSTGRESQL</type>
     <access>Native</access>
-    <database>TPCDI</database>
+    <database>${cvar_database}</database>
     <port>5432</port>
     <username>postgres</username>
-    <password>Encrypted 2be98afc86aa7f29eaa0ab471cd88aec9</password>
+    <password>${cvar_password}</password>
     <servername/>
     <data_tablespace/>
     <index_tablespace/>
@@ -570,7 +570,7 @@
     <hop>
       <from>Merge join 2</from>
       <to>Add systemic fields</to>
-      <enabled>Y</enabled>
+      <enabled>N</enabled>
     </hop>
     <hop>
       <from>Invalid Tier</from>

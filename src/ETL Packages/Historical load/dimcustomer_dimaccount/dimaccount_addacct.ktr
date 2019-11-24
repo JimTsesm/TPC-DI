@@ -440,10 +440,10 @@
     <server>127.0.0.1</server>
     <type>POSTGRESQL</type>
     <access>Native</access>
-    <database>TPCDI</database>
+    <database>${cvar_database}</database>
     <port>5432</port>
     <username>postgres</username>
-    <password>Encrypted 2be98afc86aa7f29eaa0ab471cd88aec9</password>
+    <password>${cvar_password}</password>
     <servername/>
     <data_tablespace/>
     <index_tablespace/>
@@ -1330,6 +1330,41 @@ FROM DimBroker</sql>
     </GUI>
   </step>
   <step>
+    <name>DimCustomer</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>DW</connection>
+    <sql>SELECT SK_CustomerID, CustomerID
+, EffectiveDate as CST_EffectiveDate
+, EndDate as CST_EndDate
+FROM DimCustomer</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>784</xloc>
+      <yloc>400</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Filter rows</name>
     <type>FilterRows</type>
     <description/>
@@ -1663,41 +1698,6 @@ var Status = 'ACTIVE'</jsScript_script>
     <GUI>
       <xloc>592</xloc>
       <yloc>288</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>DimCustomer</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>DW</connection>
-    <sql>SELECT SK_CustomerID, CustomerID
-, EffectiveDate as CST_EffectiveDate
-, EndDate as CST_EndDate
-FROM DimCustomer</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>784</xloc>
-      <yloc>400</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
