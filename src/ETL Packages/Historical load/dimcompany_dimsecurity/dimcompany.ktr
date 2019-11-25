@@ -441,10 +441,10 @@
     <server>127.0.0.1</server>
     <type>POSTGRESQL</type>
     <access>Native</access>
-    <database>TPCDI</database>
+    <database>${cvar_database}</database>
     <port>5432</port>
     <username>postgres</username>
-    <password>Encrypted 2be98afc86aa7f29eaa0ab471cd88aec9</password>
+    <password>${cvar_password}</password>
     <servername/>
     <data_tablespace/>
     <index_tablespace/>
@@ -859,7 +859,7 @@
     <length>Characters</length>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>C:\Users\Alex\Desktop\FINTRY.TXT</name>
+      <name>${files_path}\FINWIRE_MERGED.txt</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>
@@ -1788,7 +1788,7 @@ else
     <length>Characters</length>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>C:\Users\Alex\Desktop\Jim Profile\Studies\BDMA\Courses\Data warehouses\TPC-DI\produced_dataset\produced_dataset\Batch1\Industry.txt</name>
+      <name>${files_path}\Industry.txt</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>
@@ -1967,7 +1967,7 @@ else
     <length>Characters</length>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>C:\Users\Alex\Desktop\Jim Profile\Studies\BDMA\Courses\Data warehouses\TPC-DI\produced_dataset\produced_dataset\Batch1/StatusType.txt</name>
+      <name>${files_path}\StatusType.txt</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>
