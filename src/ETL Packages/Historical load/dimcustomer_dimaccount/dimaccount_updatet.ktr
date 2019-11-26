@@ -583,11 +583,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Filter rows</from>
-      <to>Sort rows 7</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Sort rows 2 2</from>
       <to>Merge join</to>
       <enabled>Y</enabled>
@@ -608,18 +603,8 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join 4</from>
-      <to>Filter rows</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>CSV file input</from>
       <to>Select values 6</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Merge join 2</from>
-      <to>Select values 5</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -675,6 +660,21 @@
     <hop>
       <from>Merge join 3</from>
       <to>Sort rows 2 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Merge join 4</from>
+      <to>Sort rows 7</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Merge join 2</from>
+      <to>Filter rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filter rows</from>
+      <to>Select values 5</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -1507,8 +1507,7 @@ AND ? = 1</sql>
       <schema_name/>
     </partitioning>
     <connection>DW</connection>
-    <sql>SELECT AccountId as CA_ID, Sk_CustomerId  FROM DimAccount
-</sql>
+    <sql>SELECT AccountId as CA_ID, Sk_CustomerId, effectivedate as effectivedate_acc,enddate as enddate_acc  FROM DimAccount</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
@@ -1614,7 +1613,7 @@ inner join min_cst_srgt b on a.customerid = b.customerid
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <send_true_to>Sort rows 7</send_true_to>
+    <send_true_to>Select values 5</send_true_to>
     <send_false_to/>
     <compare>
       <condition>
@@ -1624,14 +1623,14 @@ inner join min_cst_srgt b on a.customerid = b.customerid
             <negated>N</negated>
             <leftvalue>ActionDate</leftvalue>
             <function>&gt;=</function>
-            <rightvalue>cst_effectivedate</rightvalue>
+            <rightvalue>effectivedate_acc</rightvalue>
           </condition>
           <condition>
             <negated>N</negated>
             <operator>AND</operator>
             <leftvalue>ActionDate</leftvalue>
             <function>&lt;</function>
-            <rightvalue>cst_enddate</rightvalue>
+            <rightvalue>enddate_acc</rightvalue>
           </condition>
         </conditions>
       </condition>
@@ -1645,8 +1644,8 @@ inner join min_cst_srgt b on a.customerid = b.customerid
       </output>
     </remotesteps>
     <GUI>
-      <xloc>304</xloc>
-      <yloc>384</yloc>
+      <xloc>656</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1811,7 +1810,7 @@ inner join min_cst_srgt b on a.customerid = b.customerid
     <step1>Sort rows 7</step1>
     <step2>Sort rows 6</step2>
     <keys_1>
-      <key>min_sk_id</key>
+      <key>sk_customerid</key>
     </keys_1>
     <keys_2>
       <key>sk_customerid</key>
@@ -2341,6 +2340,23 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
       <remove>
         <name>CA_ID</name>
       </remove>
+      <meta>
+        <name>C_ID</name>
+        <rename>C_ID</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -2831,7 +2847,7 @@ var ActionDate = ActionTS.substr(0,10)</jsScript_script>
     <unique_rows>N</unique_rows>
     <fields>
       <field>
-        <name>min_sk_id</name>
+        <name>sk_customerid</name>
         <ascending>Y</ascending>
         <case_sensitive>N</case_sensitive>
         <collator_enabled>N</collator_enabled>

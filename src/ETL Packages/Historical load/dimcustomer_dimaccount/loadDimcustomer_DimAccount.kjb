@@ -707,7 +707,12 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
         </field>
         <field>
           <variable_name>cvar_password</variable_name>
-          <variable_value>123</variable_value>
+          <variable_value>zaszaszas</variable_value>
+          <variable_type>JVM</variable_type>
+        </field>
+        <field>
+          <variable_name>cvar_package_path</variable_name>
+          <variable_value>C:\Users\Alex\Desktop\tmp\TPC-DI\src\ETL Packages\Historical load</variable_value>
           <variable_type>JVM</variable_type>
         </field>
       </fields>
@@ -725,7 +730,7 @@ alter table dimcustomer alter column  StateProv SET NOT NULL;</sql>
       <attributes/>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename>C:\Users\Alex\Desktop\tmp\TPC-DI\src\ETL Packages\Historical load\getBatchDate.ktr</filename>
+      <filename>${cvar_package_path}\getBatchDate.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -943,6 +948,54 @@ ALTER TABLE dimaccount ALTER COLUMN SK_BrokerID  SET NOT NULL;
       <yloc>320</yloc>
       <attributes_kjc/>
     </entry>
+    <entry>
+      <name>Delete more than 1 change to DimAccount per Batch Date</name>
+      <description/>
+      <type>SQL</type>
+      <attributes/>
+      <sql>--Delete the records for the accounts that changed more than once in a batch date
+--Example: Accountid = 138,159 and 270
+with tmp as(
+select a.accountid, max(a.sk_accountid) as sk_accountid
+,min(a.sk_accountid) as sk_accountid_new, max(enddate) as enddate_new
+from dimaccount a
+inner join(
+	select accountid, effectivedate from dimaccount where
+	accountid in
+	(
+		select accountid from dimaccount where effectivedate = enddate
+	)
+	group by accountid, effectivedate
+	having count(1)>1
+) b on a.accountid = b.accountid and a.effectivedate = b.effectivedate
+group by a.accountid)
+,deleted as(
+	delete from dimaccount a
+	using tmp b where a.sk_accountid = b.sk_accountid
+	returning a.*
+)
+
+update dimaccount a
+set iscurrent = b.iscurrent
+,enddate = b.enddate
+from deleted b, tmp c  
+where c.sk_accountid = b.sk_accountid and a.sk_accountid = c.sk_accountid_new;
+
+--recreate the unique index
+CREATE UNIQUE INDEX UI_DimAccount ON DimAccount (AccountID, EndDate);
+</sql>
+      <useVariableSubstitution>F</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>DW</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>144</xloc>
+      <yloc>256</yloc>
+      <attributes_kjc/>
+    </entry>
   </entries>
   <hops>
     <hop>
@@ -1027,15 +1080,6 @@ ALTER TABLE dimaccount ALTER COLUMN SK_BrokerID  SET NOT NULL;
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Recursively update DimAccount</from>
-      <to>Set specific columns to NOT NULL 2</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
       <from>Start</from>
       <to>Set variables</to>
       <from_nr>0</from_nr>
@@ -1074,6 +1118,24 @@ ALTER TABLE dimaccount ALTER COLUMN SK_BrokerID  SET NOT NULL;
     <hop>
       <from>Find the max DimAccount SRGT</from>
       <to>Historical Update DimAccount</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Recursively update DimAccount</from>
+      <to>Delete more than 1 change to DimAccount per Batch Date</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Delete more than 1 change to DimAccount per Batch Date</from>
+      <to>Set specific columns to NOT NULL 2</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
