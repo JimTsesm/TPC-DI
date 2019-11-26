@@ -69,7 +69,8 @@ EffectiveDate date NOT NULL,
 EndDate date NOT NULL
 );
 
-CREATE UNIQUE INDEX UI_DimAccount ON DimAccount (AccountID, EndDate);
+--The index will be recreated after the Initial load of DimAccount
+--CREATE UNIQUE INDEX UI_DimAccount ON DimAccount (AccountID, EndDate);
 
 CREATE TABLE DimCompany (   
 SK_CompanyID INTEGER NOT NULL PRIMARY KEY, 
