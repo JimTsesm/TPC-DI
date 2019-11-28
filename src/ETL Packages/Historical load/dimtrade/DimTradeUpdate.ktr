@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>tradetype</name>
+    <name>DimTradeUpdate</name>
     <description/>
     <extended_description/>
     <trans_version/>
     <trans_type>Normal</trans_type>
-    <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
     </parameters>
@@ -428,23 +427,23 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2019/11/16 13:45:32.607</created_date>
-    <modified_user>admin</modified_user>
-    <modified_date>2019/11/16 13:57:48.315</modified_date>
+    <created_date>2019/11/28 13:37:49.261</created_date>
+    <modified_user>-</modified_user>
+    <modified_date>2019/11/28 13:37:49.261</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
   <connection>
-    <name>dwtpcdi</name>
-    <server>localhost</server>
+    <name>DW</name>
+    <server>127.0.0.1</server>
     <type>POSTGRESQL</type>
     <access>Native</access>
-    <database>TPCDI</database>
+    <database>${cvar_database}</database>
     <port>5432</port>
     <username>postgres</username>
-    <password>Encrypted 2be98afc86aa7f29eaa0ab471cd88aec9</password>
+    <password>${cvar_password}</password>
     <servername/>
     <data_tablespace/>
     <index_tablespace/>
@@ -479,7 +478,7 @@
       </attribute>
       <attribute>
         <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
-        <attribute>N</attribute>
+        <attribute>Y</attribute>
       </attribute>
       <attribute>
         <code>USE_POOLING</code>
@@ -489,14 +488,44 @@
   </connection>
   <order>
     <hop>
-      <from>tradetype.txt</from>
-      <to>tradetype</to>
+      <from>Database lookup</from>
+      <to>Filter rows th_st_id</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Update Create date and time</from>
+      <to>Join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Update Close date and time</from>
+      <to>Join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Join</from>
+      <to>Update DimTrade</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>DimTrade History</from>
+      <to>Database lookup</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filter rows th_st_id</from>
+      <to>Update Create date and time</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filter rows th_st_id</from>
+      <to>Update Close date and time</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>tradetype</name>
-    <type>TableOutput</type>
+    <name>Database lookup</name>
+    <type>DBLookup</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -505,41 +534,47 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>dwtpcdi</connection>
-    <schema/>
-    <table>tradetype</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>tt_id</column_name>
-        <stream_name>Field1</stream_name>
-      </field>
-      <field>
-        <column_name>tt_name</column_name>
-        <stream_name>Field2</stream_name>
-      </field>
-      <field>
-        <column_name>tt_is_sell</column_name>
-        <stream_name>Field3</stream_name>
-      </field>
-      <field>
-        <column_name>tt_is_mrkt</column_name>
-        <stream_name>Field4</stream_name>
-      </field>
-    </fields>
+    <connection>DW</connection>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema/>
+      <table>dimtrade</table>
+      <orderby/>
+      <fail_on_multiple>N</fail_on_multiple>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <key>
+        <name>tradeid</name>
+        <field>tradeid</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>sk_createdateid</name>
+        <rename>sk_createdateid</rename>
+        <default/>
+        <type>Integer</type>
+      </value>
+      <value>
+        <name>sk_createtimeid</name>
+        <rename>sk_createtimeid</rename>
+        <default/>
+        <type>Integer</type>
+      </value>
+      <value>
+        <name>sk_closedateid</name>
+        <rename>sk_closedateid</rename>
+        <default/>
+        <type>Integer</type>
+      </value>
+      <value>
+        <name>sk_closetimeid</name>
+        <rename>sk_closetimeid</rename>
+        <default/>
+        <type>Integer</type>
+      </value>
+    </lookup>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -549,14 +584,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>352</xloc>
-      <yloc>288</yloc>
+      <xloc>272</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>tradetype.txt</name>
-    <type>TextFileInput</type>
+    <name>Filter rows th_st_id</name>
+    <type>FilterRows</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -565,131 +600,46 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <accept_filenames>N</accept_filenames>
-    <passing_through_fields>N</passing_through_fields>
-    <accept_field/>
-    <accept_stepname/>
-    <separator>|</separator>
-    <enclosure>"</enclosure>
-    <enclosure_breaks>N</enclosure_breaks>
-    <escapechar/>
-    <header>N</header>
-    <nr_headerlines>1</nr_headerlines>
-    <footer>N</footer>
-    <nr_footerlines>1</nr_footerlines>
-    <line_wrapped>N</line_wrapped>
-    <nr_wraps>1</nr_wraps>
-    <layout_paged>N</layout_paged>
-    <nr_lines_per_page>80</nr_lines_per_page>
-    <nr_lines_doc_header>0</nr_lines_doc_header>
-    <noempty>Y</noempty>
-    <include>N</include>
-    <include_field/>
-    <rownum>N</rownum>
-    <rownumByFile>N</rownumByFile>
-    <rownum_field/>
-    <format>mixed</format>
-    <encoding/>
-    <length>Characters</length>
-    <add_to_result_filenames>Y</add_to_result_filenames>
-    <file>
-      <name>C:\Users\Alex\Desktop\Jim Profile\Studies\BDMA\Courses\Data warehouses\TPC-DI\produced_dataset\produced_dataset\Batch1\TradeType.txt</name>
-      <filemask/>
-      <exclude_filemask/>
-      <file_required>N</file_required>
-      <include_subfolders>N</include_subfolders>
-      <type>CSV</type>
-      <compression>None</compression>
-    </file>
-    <filters>
-    </filters>
-    <fields>
-      <field>
-        <name>Field1</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <ifnull/>
-        <position>-1</position>
-        <length>3</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Field2</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <ifnull/>
-        <position>-1</position>
-        <length>11</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Field3</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency/>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif/>
-        <ifnull/>
-        <position>-1</position>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>Field4</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency/>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif/>
-        <ifnull/>
-        <position>-1</position>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-    </fields>
-    <limit>0</limit>
-    <error_ignored>N</error_ignored>
-    <skip_bad_files>N</skip_bad_files>
-    <file_error_field/>
-    <file_error_message_field/>
-    <error_line_skipped>N</error_line_skipped>
-    <error_count_field/>
-    <error_fields_field/>
-    <error_text_field/>
-    <bad_line_files_destination_directory/>
-    <bad_line_files_extension>warning</bad_line_files_extension>
-    <error_line_files_destination_directory/>
-    <error_line_files_extension>error</error_line_files_extension>
-    <line_number_files_destination_directory/>
-    <line_number_files_extension>line</line_number_files_extension>
-    <date_format_lenient>Y</date_format_lenient>
-    <date_format_locale>en_GB</date_format_locale>
-    <shortFileFieldName/>
-    <pathFieldName/>
-    <hiddenFieldName/>
-    <lastModificationTimeFieldName/>
-    <uriNameFieldName/>
-    <rootUriNameFieldName/>
-    <extensionFieldName/>
-    <sizeFieldName/>
+    <send_true_to>Update Create date and time</send_true_to>
+    <send_false_to>Update Close date and time</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <conditions>
+          <condition>
+            <negated>N</negated>
+            <leftvalue>th_st_id</leftvalue>
+            <function>=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>String</type>
+              <text>SBMT</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask/>
+            </value>
+          </condition>
+          <condition>
+            <negated>N</negated>
+            <operator>OR</operator>
+            <leftvalue>th_st_id</leftvalue>
+            <function>=</function>
+            <rightvalue/>
+            <value>
+              <name>constant</name>
+              <type>String</type>
+              <text>PNDG</text>
+              <length>-1</length>
+              <precision>-1</precision>
+              <isnull>N</isnull>
+              <mask/>
+            </value>
+          </condition>
+        </conditions>
+      </condition>
+    </compare>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -699,8 +649,390 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>144</xloc>
-      <yloc>288</yloc>
+      <xloc>432</xloc>
+      <yloc>208</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Update Close date and time</name>
+    <type>Calculator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <failIfNoFile>N</failIfNoFile>
+    <calculation>
+      <field_name>sk_createdate_NEW</field_name>
+      <calc_type>COPY_FIELD</calc_type>
+      <field_a>sk_createdateid</field_a>
+      <field_b/>
+      <field_c/>
+      <value_type>Integer</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>sk_creatime_NEW</field_name>
+      <calc_type>COPY_FIELD</calc_type>
+      <field_a>sk_createtimeid</field_a>
+      <field_b/>
+      <field_c/>
+      <value_type>Integer</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>sk_closedate_NEW</field_name>
+      <calc_type>COPY_FIELD</calc_type>
+      <field_a>date_int</field_a>
+      <field_b/>
+      <field_c/>
+      <value_type>Integer</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>sk_closetime_NEW</field_name>
+      <calc_type>COPY_FIELD</calc_type>
+      <field_a>time_int</field_a>
+      <field_b/>
+      <field_c/>
+      <value_type>Integer</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>656</xloc>
+      <yloc>256</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Update Create date and time</name>
+    <type>Calculator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <failIfNoFile>N</failIfNoFile>
+    <calculation>
+      <field_name>sk_createdate_NEW</field_name>
+      <calc_type>COPY_FIELD</calc_type>
+      <field_a>date_int</field_a>
+      <field_b/>
+      <field_c/>
+      <value_type>Integer</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>sk_creatime_NEW</field_name>
+      <calc_type>COPY_FIELD</calc_type>
+      <field_a>time_int</field_a>
+      <field_b/>
+      <field_c/>
+      <value_type>Integer</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>sk_closedate_NEW</field_name>
+      <calc_type>COPY_FIELD</calc_type>
+      <field_a>sk_closedateid</field_a>
+      <field_b/>
+      <field_c/>
+      <value_type>Integer</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <calculation>
+      <field_name>sk_closetime_NEW</field_name>
+      <calc_type>COPY_FIELD</calc_type>
+      <field_a>sk_closetimeid</field_a>
+      <field_b/>
+      <field_c/>
+      <value_type>Integer</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <remove>N</remove>
+      <conversion_mask/>
+      <decimal_symbol/>
+      <grouping_symbol/>
+      <currency_symbol/>
+    </calculation>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>656</xloc>
+      <yloc>144</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Join</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>784</xloc>
+      <yloc>208</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Update DimTrade</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>DW</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>dimtrade</table>
+      <key>
+        <name>tradeid</name>
+        <field>tradeid</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>sk_createdateid</name>
+        <rename>sk_createdate_NEW</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>sk_createtimeid</name>
+        <rename>sk_creatime_NEW</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>sk_closedateid</name>
+        <rename>sk_closedate_NEW</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>sk_closetimeid</name>
+        <rename>sk_closetime_NEW</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>sk_brokerid</name>
+        <rename>sk_brokerid</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>sk_companyid</name>
+        <rename>sk_companyid</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>sk_securityid</name>
+        <rename>sk_securityid</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>sk_customerid</name>
+        <rename>sk_customerid</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>sk_accountid</name>
+        <rename>sk_accountid</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>batchid</name>
+        <rename>BatchID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>dt_type</name>
+        <rename>dt_type</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>tradeid</name>
+        <rename>tradeid</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>status</name>
+        <rename>status</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>cashflag</name>
+        <rename>cashflag</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>quantity</name>
+        <rename>quantity</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>bidprice</name>
+        <rename>bidprice</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>executedby</name>
+        <rename>executedby</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>tradeprice</name>
+        <rename>tradeprice</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>fee</name>
+        <rename>fee</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>commission</name>
+        <rename>commission</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>tax</name>
+        <rename>tax</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>944</xloc>
+      <yloc>208</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>DimTrade History</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>DW</connection>
+    <sql>--Fetch the last record in order to update DimTrade table
+select *
+from
+(
+	select rank() over (partition by tradeid order by date_int desc, time_int desc) as rank
+	,*
+	from dimtrade_history
+) a
+where rank = 1
+order by tradeid
+</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>48</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

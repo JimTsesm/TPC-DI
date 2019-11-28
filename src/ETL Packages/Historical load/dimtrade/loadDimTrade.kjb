@@ -1,68 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
-  <name>loadDimcompany_DimSecurity</name>
+  <name>loadDimTrade</name>
   <description/>
   <extended_description/>
   <job_version/>
-  <job_status>0</job_status>
   <directory>/</directory>
   <created_user>-</created_user>
-  <created_date>2019/11/14 23:38:02.833</created_date>
+  <created_date>2019/11/28 10:31:19.388</created_date>
   <modified_user>-</modified_user>
-  <modified_date>2019/11/14 23:38:02.833</modified_date>
+  <modified_date>2019/11/28 10:31:19.388</modified_date>
   <parameters>
     </parameters>
-  <connection>
-    <name>DW</name>
-    <server>127.0.0.1</server>
-    <type>POSTGRESQL</type>
-    <access>Native</access>
-    <database>${cvar_database}</database>
-    <port>5432</port>
-    <username>postgres</username>
-    <password>${cvar_password}</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
-    <attributes>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>IS_CLUSTERED</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>PORT_NUMBER</code>
-        <attribute>5432</attribute>
-      </attribute>
-      <attribute>
-        <code>PRESERVE_RESERVED_WORD_CASE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>QUOTE_ALL_FIELDS</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>USE_POOLING</code>
-        <attribute>N</attribute>
-      </attribute>
-    </attributes>
-  </connection>
   <slaveservers>
     </slaveservers>
   <job-log-table>
@@ -356,18 +304,50 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>64</xloc>
-      <yloc>208</yloc>
+      <xloc>80</xloc>
+      <yloc>128</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>Find the max DimCompany SRGT</name>
+      <name>Set variables</name>
+      <description/>
+      <type>SET_VARIABLES</type>
+      <attributes/>
+      <replacevars>Y</replacevars>
+      <filename/>
+      <file_variable_type>JVM</file_variable_type>
+      <fields>
+        <field>
+          <variable_name>files_path</variable_name>
+          <variable_value>C:\Users\Alex\Desktop\Jim Profile\Studies\BDMA\Courses\Data warehouses\TPC-DI\produced_dataset\produced_dataset\Batch1</variable_value>
+          <variable_type>JVM</variable_type>
+        </field>
+        <field>
+          <variable_name>cvar_database</variable_name>
+          <variable_value>TPCDI</variable_value>
+          <variable_type>JVM</variable_type>
+        </field>
+        <field>
+          <variable_name>cvar_password</variable_name>
+          <variable_value>zaszaszas</variable_value>
+          <variable_type>JVM</variable_type>
+        </field>
+      </fields>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>208</xloc>
+      <yloc>128</yloc>
+      <attributes_kjc/>
+    </entry>
+    <entry>
+      <name>Load DimTrada</name>
       <description/>
       <type>TRANS</type>
       <attributes/>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename>${Internal.Entry.Current.Directory}/maxSrgt.ktr</filename>
+      <filename>${Internal.Entry.Current.Directory}/DimTrade.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -395,99 +375,17 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>320</xloc>
-      <yloc>208</yloc>
+      <yloc>128</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>Load DimComany</name>
+      <name>Update DimTrade</name>
       <description/>
       <type>TRANS</type>
       <attributes/>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename>${Internal.Entry.Current.Directory}/dimcompany.ktr</filename>
-      <transname/>
-      <arg_from_previous>N</arg_from_previous>
-      <params_from_previous>N</params_from_previous>
-      <exec_per_row>N</exec_per_row>
-      <clear_rows>N</clear_rows>
-      <clear_files>N</clear_files>
-      <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <loglevel>Basic</loglevel>
-      <cluster>N</cluster>
-      <slave_server_name/>
-      <set_append_logfile>N</set_append_logfile>
-      <wait_until_finished>Y</wait_until_finished>
-      <follow_abort_remote>N</follow_abort_remote>
-      <create_parent_folder>N</create_parent_folder>
-      <logging_remote_work>N</logging_remote_work>
-      <run_configuration>Pentaho local</run_configuration>
-      <parameters>
-        <pass_all_parameters>Y</pass_all_parameters>
-      </parameters>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>480</xloc>
-      <yloc>208</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>Success</name>
-      <description/>
-      <type>SUCCESS</type>
-      <attributes/>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>944</xloc>
-      <yloc>208</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>Set variables</name>
-      <description/>
-      <type>SET_VARIABLES</type>
-      <attributes/>
-      <replacevars>Y</replacevars>
-      <filename/>
-      <file_variable_type>JVM</file_variable_type>
-      <fields>
-        <field>
-          <variable_name>files_path</variable_name>
-          <variable_value>C:\Users\Alex\Desktop\Jim Profile\Studies\BDMA\Courses\Data warehouses\TPC-DI\produced_dataset\produced_dataset\Batch1</variable_value>
-          <variable_type>JVM</variable_type>
-        </field>
-        <field>
-          <variable_name>cvar_database</variable_name>
-          <variable_value>TPCDI</variable_value>
-          <variable_type>JVM</variable_type>
-        </field>
-        <field>
-          <variable_name>cvar_password</variable_name>
-          <variable_value>123</variable_value>
-          <variable_type>JVM</variable_type>
-        </field>
-      </fields>
-      <parallel>N</parallel>
-      <draw>Y</draw>
-      <nr>0</nr>
-      <xloc>144</xloc>
-      <yloc>208</yloc>
-      <attributes_kjc/>
-    </entry>
-    <entry>
-      <name>Load DimSecurity</name>
-      <description/>
-      <type>TRANS</type>
-      <attributes/>
-      <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>${Internal.Entry.Current.Directory}/dimsecurity.ktr</filename>
+      <filename>${Internal.Entry.Current.Directory}/DimTradeUpdate.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -515,73 +413,30 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>608</xloc>
-      <yloc>208</yloc>
+      <yloc>128</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>Update the SK_CompanyId</name>
+      <name>Add unique index to DimTrade</name>
       <description/>
       <type>SQL</type>
       <attributes/>
-      <sql>with tmp as(
-select max(sk_securityid) as max_srgt from dimsecurity
-),
-updated_sec as(
-update dimsecurity as b
-set enddate = a.enddate,
-iscurrent = 'False'
-from 
-		(select *
-		 ,case when LEAD(sk_companyid,1) OVER ( PARTITION BY companyid ORDER BY effectivedate) is null then -1 else LEAD(sk_companyid,1) OVER ( PARTITION BY companyid ORDER BY effectivedate) end as next_sk_companyid
-		 ,LEAD(effectivedate,1) OVER ( PARTITION BY companyid ORDER BY effectivedate) next_effd
-		 ,LEAD(enddate,1) OVER ( PARTITION BY companyid ORDER BY effectivedate) next_sk_endd
-		 from dimcompany) as a
-where a.sk_companyid = b.sk_companyid 
-and a.enddate &lt;&gt; '9999-12-31'
-and b.effectivedate &lt;= a.enddate and a.enddate &lt; b.enddate
-and b.enddate = '9999-12-31'
-RETURNING
-b.Symbol ,
-b.Issue ,
-b.Status ,
-b.Name L,
-b.ExchangeID ,
-a.next_sk_companyid,
-b.SharesOutstanding ,
-b.FirstTrade ,
-b.FirstTradeOnExchange ,
-b.Dividend ,
-cast('True' as boolean) ,
-b.BatchID ,
-a.EndDate as EFFECTIVEDATE,
-cast('9999-12-31' as date) 
-)
-insert into dimsecurity
-select max_srgt + ROW_NUMBER() OVER (ORDER BY EFFECTIVEDATE)
-,a.* from updated_sec a, tmp</sql>
+      <sql>CREATE UNIQUE INDEX UI_DimTrade ON DimTrade (TradeID);
+</sql>
       <useVariableSubstitution>F</useVariableSubstitution>
       <sqlfromfile>F</sqlfromfile>
       <sqlfilename/>
       <sendOneStatement>F</sendOneStatement>
-      <connection>DW</connection>
+      <connection/>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>768</xloc>
-      <yloc>208</yloc>
+      <xloc>464</xloc>
+      <yloc>128</yloc>
       <attributes_kjc/>
     </entry>
   </entries>
   <hops>
-    <hop>
-      <from>Find the max DimCompany SRGT</from>
-      <to>Load DimComany</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
     <hop>
       <from>Start</from>
       <to>Set variables</to>
@@ -593,7 +448,7 @@ select max_srgt + ROW_NUMBER() OVER (ORDER BY EFFECTIVEDATE)
     </hop>
     <hop>
       <from>Set variables</from>
-      <to>Find the max DimCompany SRGT</to>
+      <to>Load DimTrada</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -601,8 +456,8 @@ select max_srgt + ROW_NUMBER() OVER (ORDER BY EFFECTIVEDATE)
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Load DimComany</from>
-      <to>Load DimSecurity</to>
+      <from>Load DimTrada</from>
+      <to>Add unique index to DimTrade</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -610,17 +465,8 @@ select max_srgt + ROW_NUMBER() OVER (ORDER BY EFFECTIVEDATE)
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>Load DimSecurity</from>
-      <to>Update the SK_CompanyId</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>Update the SK_CompanyId</from>
-      <to>Success</to>
+      <from>Add unique index to DimTrade</from>
+      <to>Update DimTrade</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>

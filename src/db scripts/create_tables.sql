@@ -136,6 +136,9 @@ EffectiveDate DATE Not NULL,
 EndDate DATE Not NULL
 );
 
+CREATE UNIQUE INDEX UI_DimSecurity ON DimSecurity (Symbol, EndDate);
+
+
 CREATE TABLE DimTime ( 
 SK_TimeID INTEGER Not NULL PRIMARY KEY,
 TimeValue TIME Not NULL,
@@ -173,7 +176,30 @@ Tax numeric(10,2),
 BatchID numeric(5) Not Null
 );
 
-CREATE UNIQUE INDEX UI_DimTrade ON DimTrade (TradeID);
+
+CREATE TABLE public.dimtrade_history
+(
+    tradeid integer NOT NULL,
+    sk_brokerid integer,
+    date_int integer,
+    time_int integer,
+    status character(10) COLLATE pg_catalog."default" NOT NULL,
+    dt_type character(12) COLLATE pg_catalog."default" NOT NULL,
+    cashflag boolean NOT NULL,
+    sk_securityid integer NOT NULL,
+    sk_companyid integer NOT NULL,
+    quantity numeric(6,0) NOT NULL,
+    bidprice numeric(8,2) NOT NULL,
+    sk_customerid integer NOT NULL,
+    sk_accountid integer NOT NULL,
+    executedby character(64) COLLATE pg_catalog."default" NOT NULL,
+    tradeprice numeric(8,2),
+    fee numeric(10,2),
+    commission numeric(10,2),
+    tax numeric(10,2),
+	TH_ST_ID character(20) COLLATE pg_catalog."default" NOT NULL,
+    batchid numeric(5,0) NOT NULL
+)
 
 
 CREATE TABLE DImessages ( 
