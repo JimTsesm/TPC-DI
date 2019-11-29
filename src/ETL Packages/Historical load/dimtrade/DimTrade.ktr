@@ -513,11 +513,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Select values</from>
-      <to>Analytic query</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Analytic query</from>
       <to>Modified JavaScript value</to>
       <enabled>Y</enabled>
@@ -603,11 +598,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Filter rows 2</from>
-      <to>Trim date fields</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Merge Join 4</from>
       <to>Filter rows</to>
       <enabled>Y</enabled>
@@ -620,11 +610,6 @@
     <hop>
       <from>Modified JavaScript value</from>
       <to>cast</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>cast</from>
-      <to>Sort rows 5</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -670,6 +655,36 @@
     <hop>
       <from>Insert/Update</from>
       <to>DimTrade_history</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filter rows 2</from>
+      <to>Sort rows 11</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows 11</from>
+      <to>Analytic query</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>cast</from>
+      <to>Trim date fields</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>TH_DTS_DATE</from>
+      <to>cast 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>cast 2</from>
+      <to>Sort rows 5</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values</from>
+      <to>TH_DTS_DATE</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -745,7 +760,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>256</xloc>
+      <xloc>1584</xloc>
       <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
@@ -825,7 +840,7 @@
 ,effectivedate as effectivedate_acc
 ,enddate as enddate_acc
 FROM dimaccount
-WHERE iscurrent = 'True'</sql>
+--WHERE iscurrent = 'True'</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
@@ -859,7 +874,7 @@ WHERE iscurrent = 'True'</sql>
     <connection>DW</connection>
     <sql>SELECT sk_securityid,symbol,sk_companyid,effectivedate,enddate
 FROM dimsecurity
-where iscurrent = 'True'</sql>
+--where iscurrent = 'True'</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
@@ -1296,7 +1311,7 @@ where iscurrent = 'True'</sql>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <send_true_to>Trim date fields</send_true_to>
+    <send_true_to>Sort rows 11</send_true_to>
     <send_false_to/>
     <compare>
       <condition>
@@ -1591,10 +1606,7 @@ where iscurrent = 'True'</sql>
         <jsScript_script>var is_first;
 
 if(TH_T_ID_NEXT == null) is_first = 1;
-else is_first = 0;
-
-var TH_DTS_DATE;
-TH_DTS_DATE = TH_DTS.substr(0,10);</jsScript_script>
+else is_first = 0;</jsScript_script>
       </jsScript>
     </jsScripts>
     <fields>
@@ -1602,14 +1614,6 @@ TH_DTS_DATE = TH_DTS.substr(0,10);</jsScript_script>
         <name>is_first</name>
         <rename>is_first</rename>
         <type>Integer</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>TH_DTS_DATE</name>
-        <rename>TH_DTS_DATE</rename>
-        <type>String</type>
         <length>-1</length>
         <precision>-1</precision>
         <replace>N</replace>
@@ -1624,7 +1628,7 @@ TH_DTS_DATE = TH_DTS.substr(0,10);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>368</xloc>
+      <xloc>1728</xloc>
       <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
@@ -2700,8 +2704,8 @@ TH_DTS_DATE = TH_DTS.substr(0,10);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>480</xloc>
-      <yloc>192</yloc>
+      <xloc>1616</xloc>
+      <yloc>256</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2920,6 +2924,146 @@ SK_CloseTimeID = null;
     <GUI>
       <xloc>864</xloc>
       <yloc>16</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows 11</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>T_ID</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <name>TH_DTS</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1488</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>TH_DTS_DATE</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>var TH_DTS_DATE;
+TH_DTS_DATE = TH_DTS.substr(0,10);</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>TH_DTS_DATE</name>
+        <rename>TH_DTS_DATE</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>288</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>cast 2</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>TH_DTS_DATE</name>
+        <rename>TH_DTS_DATE</rename>
+        <type>Date</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask>yyyy-MM-dd</conversion_mask>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>432</xloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

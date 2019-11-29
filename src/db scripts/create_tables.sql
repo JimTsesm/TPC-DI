@@ -13,7 +13,7 @@ EffectiveDate date NOT NULL,
 EndDate date NOT NULL
 );
 
-CREATE UNIQUE INDEX UI_DimBroker ON DimBroker (BrokerID, ManagerID, EffectiveDate);
+CREATE UNIQUE INDEX UI_DimBroker ON DimBroker (BrokerID, ManagerID, EndDate);
 
 
 CREATE TABLE DimCustomer  ( 
@@ -52,7 +52,7 @@ EffectiveDate date NOT NULL,
 EndDate date NOT NULL
 );
 
-CREATE UNIQUE INDEX UI_DimCustomer ON DimCustomer (CustomerID, EffectiveDate);
+CREATE UNIQUE INDEX UI_DimCustomer ON DimCustomer (CustomerID, EndDate);
 
 
 CREATE TABLE DimAccount  ( 
@@ -95,7 +95,7 @@ EffectiveDate DATE Not NULL,
 EndDate DATE Not NULL
 );
 
-CREATE UNIQUE INDEX UI_DimCompany ON DimCompany (CompanyID, EffectiveDate);
+CREATE UNIQUE INDEX UI_DimCompany ON DimCompany (CompanyID, EndDate);
 
 
 CREATE TABLE DimDate (  
