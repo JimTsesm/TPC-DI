@@ -199,7 +199,7 @@ CREATE TABLE public.dimtrade_history
     tax numeric(10,2),
 	TH_ST_ID character(20) COLLATE pg_catalog."default" NOT NULL,
     batchid numeric(5,0) NOT NULL
-)
+);
 
 
 CREATE TABLE DImessages ( 
