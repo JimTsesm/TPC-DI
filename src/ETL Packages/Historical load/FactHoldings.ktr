@@ -6,7 +6,7 @@
     <extended_description/>
     <trans_version/>
     <trans_type>Normal</trans_type>
-    <directory>/home</directory>
+    <directory>/</directory>
     <parameters>
     </parameters>
     <log>
@@ -430,27 +430,59 @@
     <created_date>2019/11/17 19:45:40.604</created_date>
     <modified_user>admin</modified_user>
     <modified_date>2019/11/26 02:05:05.914</modified_date>
-    <key_for_session_key/>
+    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
   <connection>
     <name>PostGresConnect</name>
-    <server>localhost</server>
+    <server>127.0.0.1</server>
     <type>POSTGRESQL</type>
     <access>Native</access>
-    <database>postgres</database>
+    <database>${cvar_database}</database>
     <port>5432</port>
     <username>postgres</username>
-    <password>Encrypted 2be98af9c02c28b87aa58ff7ddbcaf8e2</password>
+    <password>${cvar_password}</password>
     <servername/>
     <data_tablespace/>
     <index_tablespace/>
     <attributes>
       <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
         <code>PORT_NUMBER</code>
         <attribute>5432</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
       </attribute>
     </attributes>
   </connection>
@@ -481,16 +513,92 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join</from>
-      <to>BatchID</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>BatchID</from>
       <to>FactHoldings</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Merge join</from>
+      <to>Select values 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values 2</from>
+      <to>BatchID</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
+  <step>
+    <name>BatchID</name>
+    <type>Constant</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>BatchID</name>
+        <type>Number</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>1</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>464</xloc>
+      <yloc>288</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>DimTrade</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>PostGresConnect</connection>
+    <sql>SELECT * FROM DimTrade </sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>208</xloc>
+      <yloc>16</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
   <step>
     <name>HoldingHistory</name>
     <type>TextFileInput</type>
@@ -530,7 +638,7 @@
     <length>Characters</length>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>${produced_dataset}/Batch1/HoldingHistory.txt</name>
+      <name>${files_path}\HoldingHistory.txt</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>
@@ -642,38 +750,6 @@
     </GUI>
   </step>
   <step>
-    <name>DimTrade</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>PostGresConnect</connection>
-    <sql>SELECT * FROM DimTrade </sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>208</xloc>
-      <yloc>16</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>Merge join</name>
     <type>MergeJoin</type>
     <description/>
@@ -688,20 +764,10 @@
     <step1>Sort rows</step1>
     <step2>Sort rows 2</step2>
     <keys_1>
-      <key>HH_H_T_ID</key>
       <key>HH_T_ID</key>
-      <key>HH_BEFORE_QTY</key>
-      <key>HH_AFTER_QTY</key>
     </keys_1>
     <keys_2>
       <key>tradeid</key>
-      <key>sk_accountid</key>
-      <key>sk_customerid</key>
-      <key>sk_securityid</key>
-      <key>sk_companyid</key>
-      <key>tradeprice</key>
-      <key>SK_DateID</key>
-      <key>SK_TimeID</key>
     </keys_2>
     <attributes/>
     <cluster_schema/>
@@ -714,6 +780,60 @@
     <GUI>
       <xloc>208</xloc>
       <yloc>288</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>tradeid</name>
+      </field>
+      <field>
+        <name>sk_accountid</name>
+      </field>
+      <field>
+        <name>sk_customerid</name>
+      </field>
+      <field>
+        <name>sk_securityid</name>
+      </field>
+      <field>
+        <name>sk_companyid</name>
+      </field>
+      <field>
+        <name>tradeprice</name>
+      </field>
+      <field>
+        <name>sk_closedateid</name>
+        <rename>SK_DateID</rename>
+      </field>
+      <field>
+        <name>sk_closetimeid</name>
+        <rename>SK_TimeID</rename>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>208</xloc>
+      <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -802,7 +922,95 @@
     </GUI>
   </step>
   <step>
-    <name>Select values</name>
+    <name>FactHoldings</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>PostGresConnect</connection>
+    <schema/>
+    <table>factholdings</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>currenttradeid</column_name>
+        <stream_name>currenttradeid</stream_name>
+      </field>
+      <field>
+        <column_name>currentholding</column_name>
+        <stream_name>currentholding</stream_name>
+      </field>
+      <field>
+        <column_name>tradeid</column_name>
+        <stream_name>tradeid</stream_name>
+      </field>
+      <field>
+        <column_name>sk_accountid</column_name>
+        <stream_name>sk_accountid</stream_name>
+      </field>
+      <field>
+        <column_name>sk_customerid</column_name>
+        <stream_name>sk_customerid</stream_name>
+      </field>
+      <field>
+        <column_name>sk_securityid</column_name>
+        <stream_name>sk_securityid</stream_name>
+      </field>
+      <field>
+        <column_name>sk_companyid</column_name>
+        <stream_name>sk_companyid</stream_name>
+      </field>
+      <field>
+        <column_name>currentprice</column_name>
+        <stream_name>currentprice</stream_name>
+      </field>
+      <field>
+        <column_name>SK_DateID</column_name>
+        <stream_name>SK_DateID</stream_name>
+      </field>
+      <field>
+        <column_name>SK_TimeID</column_name>
+        <stream_name>SK_TimeID</stream_name>
+      </field>
+      <field>
+        <column_name>BatchID</column_name>
+        <stream_name>BatchID</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>576</xloc>
+      <yloc>288</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 2</name>
     <type>SelectValues</type>
     <description/>
     <distribute>Y</distribute>
@@ -813,6 +1021,22 @@
       <schema_name/>
     </partitioning>
     <fields>
+      <field>
+        <name>HH_H_T_ID</name>
+        <rename/>
+      </field>
+      <field>
+        <name>HH_T_ID</name>
+        <rename>currenttradeid</rename>
+      </field>
+      <field>
+        <name>HH_BEFORE_QTY</name>
+        <rename/>
+      </field>
+      <field>
+        <name>HH_AFTER_QTY</name>
+        <rename>currentholding</rename>
+      </field>
       <field>
         <name>tradeid</name>
         <rename/>
@@ -835,17 +1059,23 @@
       </field>
       <field>
         <name>tradeprice</name>
+        <rename>currentprice</rename>
+      </field>
+      <field>
+        <name>SK_DateID</name>
         <rename/>
       </field>
       <field>
-        <name>sk_closedateid</name>
-        <rename>SK_DateID</rename>
-      </field>
-      <field>
-        <name>sk_closetimeid</name>
-        <rename>SK_TimeID</rename>
+        <name>SK_TimeID</name>
+        <rename/>
       </field>
       <select_unspecified>N</select_unspecified>
+      <remove>
+        <name>HH_BEFORE_QTY</name>
+      </remove>
+      <remove>
+        <name>HH_H_T_ID</name>
+      </remove>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -856,90 +1086,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>208</xloc>
-      <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>BatchID</name>
-    <type>Constant</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>BatchID</name>
-        <type>Number</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif>1</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>320</xloc>
-      <yloc>288</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>FactHoldings</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>PostGresConnect</connection>
-    <schema/>
-    <table/>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>N</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>432</xloc>
+      <xloc>336</xloc>
       <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
