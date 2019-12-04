@@ -228,7 +228,7 @@ SK_SecurityID INTEGER Not NULL REFERENCES DimSecurity (SK_SecurityID),
 SK_CompanyID INTEGER Not NULL REFERENCES DimCompany (SK_CompanyID),
 SK_DateID INTEGER Not NULL REFERENCES DimDate (SK_DateID),
 SK_TimeID INTEGER Not NULL REFERENCES DimTime (SK_TimeID),
-CurrentPrice INTEGER CHECK (CurrentPrice > 0) ,
+CurrentPrice numeric(8,2) CHECK (CurrentPrice > 0) ,
 CurrentHolding numeric(6) Not NULL,
 BatchID numeric(5)
 );
