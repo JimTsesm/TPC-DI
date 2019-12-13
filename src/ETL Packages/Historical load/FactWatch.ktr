@@ -518,11 +518,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join 2</from>
-      <to>Sort rows 6</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>DimDate</from>
       <to>Sort rows 4</to>
       <enabled>Y</enabled>
@@ -545,11 +540,6 @@
     <hop>
       <from>Select values 2</from>
       <to>SK_DATEID_DateRemoved</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>WatchHistory</from>
-      <to>Filter rows</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -608,11 +598,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join 5</from>
-      <to>Sort rows 9</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Sort rows 9</from>
       <to>Merge join 6</to>
       <enabled>Y</enabled>
@@ -623,43 +608,43 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Sort rows 7</from>
-      <to>Select values</to>
+      <from>Set SK_DateID_DateRemoved</from>
+      <to>Join</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join 6</from>
-      <to>Sort rows 10</to>
+      <from>WatchHistory</from>
+      <to>Filter rows</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Sort rows 10</from>
-      <to>Merge join 7</to>
+      <from>Merge join 2</from>
+      <to>Filter current rows 2</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Select values</from>
-      <to>Database lookup</to>
+      <from>Filter current rows 2</from>
+      <to>Sort rows 6</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Sort rows 11</from>
-      <to>Merge join 7</to>
+      <from>Merge join 5</from>
+      <to>Filter current rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filter current rows</from>
+      <to>Sort rows 9</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Database lookup</from>
-      <to>Sort rows 11</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Merge join 7</from>
       <to>Set SK_DateID_DateRemoved</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Set SK_DateID_DateRemoved</from>
-      <to>Join</to>
+      <from>Merge join 6</from>
+      <to>Database lookup</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -699,6 +684,60 @@
     <GUI>
       <xloc>1104</xloc>
       <yloc>432</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Database lookup</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>PostGresConnect</connection>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema/>
+      <table>factwatches</table>
+      <orderby/>
+      <fail_on_multiple>N</fail_on_multiple>
+      <eat_row_on_failure>Y</eat_row_on_failure>
+      <key>
+        <name>sk_customerid</name>
+        <field>sk_customerid</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>sk_securityid</name>
+        <field>sk_securityid</field>
+        <condition/>
+        <name2/>
+      </key>
+      <value>
+        <name>sk_dateid_dateplaced</name>
+        <rename>sk_dateid_dateplaced</rename>
+        <default/>
+        <type>Integer</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>464</xloc>
+      <yloc>560</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1028,7 +1067,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>848</xloc>
+      <xloc>832</xloc>
       <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1169,7 +1208,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1184</xloc>
+      <xloc>1120</xloc>
       <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1226,15 +1265,12 @@
     <fields>
       <field>
         <name>sk_customerid</name>
-        <rename/>
       </field>
       <field>
         <name>sk_securityid</name>
-        <rename/>
       </field>
       <field>
         <name>sk_dateid_dateplaced</name>
-        <rename/>
       </field>
       <field>
         <name>sk_dateid</name>
@@ -1673,7 +1709,7 @@
     <length>Characters</length>
     <add_to_result_filenames>Y</add_to_result_filenames>
     <file>
-      <name>C:/Users/ayadi/Downloads/pentaho-server-ce-7.1.0.0-12/tpc-di benchmark/produced_dataset/Batch1/WatchHistory.txt</name>
+      <name>${files_path}\WatchHistory.txt</name>
       <filemask/>
       <exclude_filemask/>
       <file_required>N</file_required>
@@ -1717,7 +1753,7 @@
       <field>
         <name>W_DTS</name>
         <type>Date</type>
-        <format>yyyy-MM-dd HH:mm:ss</format>
+        <format>yyyy-MM-dd</format>
         <currency/>
         <decimal>.</decimal>
         <group>,</group>
@@ -1785,8 +1821,8 @@
     </GUI>
   </step>
   <step>
-    <name>Select values</name>
-    <type>SelectValues</type>
+    <name>Filter current rows 2</name>
+    <type>FilterRows</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1795,13 +1831,28 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <fields>
-      <field>
-        <name>sk_customerid</name>
-        <rename/>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
+    <send_true_to>Sort rows 6</send_true_to>
+    <send_false_to/>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <conditions>
+          <condition>
+            <negated>N</negated>
+            <leftvalue>W_DTS</leftvalue>
+            <function>&gt;=</function>
+            <rightvalue>effectivedate</rightvalue>
+          </condition>
+          <condition>
+            <negated>N</negated>
+            <operator>AND</operator>
+            <leftvalue>W_DTS</leftvalue>
+            <function>&lt;</function>
+            <rightvalue>enddate</rightvalue>
+          </condition>
+        </conditions>
+      </condition>
+    </compare>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1811,14 +1862,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>336</xloc>
-      <yloc>560</yloc>
+      <xloc>656</xloc>
+      <yloc>128</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Sort rows 10</name>
-    <type>SortRows</type>
+    <name>Filter current rows</name>
+    <type>FilterRows</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1827,65 +1878,28 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>sk_customerid</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>736</xloc>
-      <yloc>432</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 11</name>
-    <type>SortRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory/>
-    <compress>N</compress>
-    <compress_variable/>
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>sk_customerid</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
+    <send_true_to>Sort rows 9</send_true_to>
+    <send_false_to/>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <conditions>
+          <condition>
+            <negated>N</negated>
+            <leftvalue>W_DTS</leftvalue>
+            <function>&gt;=</function>
+            <rightvalue>effectivedate</rightvalue>
+          </condition>
+          <condition>
+            <negated>N</negated>
+            <operator>AND</operator>
+            <leftvalue>W_DTS</leftvalue>
+            <function>&lt;</function>
+            <rightvalue>enddate</rightvalue>
+          </condition>
+        </conditions>
+      </condition>
+    </compare>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1896,89 +1910,7 @@
     </remotesteps>
     <GUI>
       <xloc>576</xloc>
-      <yloc>560</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Merge join 7</name>
-    <type>MergeJoin</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <join_type>INNER</join_type>
-    <step1>Sort rows 10</step1>
-    <step2>Sort rows 11</step2>
-    <keys_1>
-      <key>sk_customerid</key>
-    </keys_1>
-    <keys_2>
-      <key>sk_customerid</key>
-    </keys_2>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>736</xloc>
-      <yloc>560</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Database lookup</name>
-    <type>DBLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>PostGresConnect</connection>
-    <cache>N</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <lookup>
-      <schema/>
-      <table>factwatches</table>
-      <orderby/>
-      <fail_on_multiple>N</fail_on_multiple>
-      <eat_row_on_failure>Y</eat_row_on_failure>
-      <key>
-        <name>sk_customerid</name>
-        <field>sk_customerid</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>sk_dateid_dateplaced</name>
-        <rename>sk_dateid_dateplaced</rename>
-        <default/>
-        <type>Integer</type>
-      </value>
-    </lookup>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>464</xloc>
-      <yloc>560</yloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
